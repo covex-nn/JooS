@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Jenkins-Jobs">
+  <property name="source" value="${basedir}/library"/>
+
+  <target name="build" depends="CI-clean">
+    <antcall target="CI-pdepend" />
+    <antcall target="CI-phpmd" />
+    <antcall target="CI-phpcpd" />
+    <antcall target="CI-phpcs" />
+    <antcall target="CI-phpdoc" />
+    <antcall target="CI-phploc" />
+    <antcall target="CI-phpunit" />
+    <antcall target="CI-phpcb" />
+  </target>
+  
+  <target name="CI-clean">
+    <delete dir="${basedir}/build/api"/>
+    <delete dir="${basedir}/build/code-browser"/>
+    <delete dir="${basedir}/build/coverage"/>
+    <delete dir="${basedir}/build/logs"/>
+    <delete dir="${basedir}/build/pdepend"/>
+    <mkdir dir="${basedir}/build/api"/>
+    <mkdir dir="${basedir}/build/code-browser"/>
+    <mkdir dir="${basedir}/build/coverage"/>
+    <mkdir dir="${basedir}/build/logs"/>
+    <mkdir dir="${basedir}/build/pdepend"/>
+  </target>
+  
+  <target name="CI-pdepend" description="Generate jdepend.xml and software metrics charts using PHP_Depend">
+    <exec executable="pdepend">
+      <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
+      <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
+      <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
+      <arg value="${source}"/>
+    </exec>
+  </target>
+
+  <target name="CI-phpmd" description="Generate pmd.xml using PHPMD">
+    <exec executable="phpmd">
+      <arg value="${source}" />
+      <arg value="xml" />
+      <arg value="codesize,design,naming,unusedcode" />
+      <arg value="--reportfile" />
+      <arg value="${basedir}/build/logs/pmd.xml" />
+    </exec>
+  </target>
+  
+  <target name="CI-phpcpd" description="Generate pmd-cpd.xml using PHPCPD">
+    <exec executable="phpcpd">
+      <arg value="--log-pmd" />
+      <arg value="${basedir}/build/logs/pmd-cpd.xml" />
+      <arg value="${source}"/>
+    </exec>
+  </target>
+  
+  <target name="CI-phpcs" description="Generate checkstyle.xml using PHP_CodeSniffer">
+    <exec executable="phpcs" output="/dev/null">
+      <arg value="--report=checkstyle" />
+      <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
+      <arg value="--standard=Zend" />
+      <arg value="${source}"/>
+    </exec>
+  </target>
+  
+  <target name="CI-phpdoc" description="Generate API documentation using PHPDocumentor">
+    <exec executable="phpdoc">
+      <arg value="-d" />
+      <arg value="${source}" />
+      <arg value="-t" />
+      <arg value="${basedir}/build/api" />
+    </exec>
+  </target>
+  
+  <target name="CI-phploc" description="Generate phploc.csv">
+    <exec executable="phploc">
+      <arg value="--log-csv" />
+      <arg value="${basedir}/build/logs/phploc.csv" />
+      <arg value="${source}" />
+    </exec>
+  </target>
+  
+  <target name="CI-phpunit" description="Run unit tests using PHPUnit and generates junit.xml and clover.xml">
+    <exec executable="phpunit" failonerror="true">
+    </exec>
+  </target>
+
+  <target name="CI-phpcb" description="Aggregate tool output with PHP_CodeBrowser">
+    <exec executable="phpcb">
+      <arg value="--log" />
+      <arg value="${basedir}/build/logs" />
+      <arg value="--source" />
+      <arg value="${source}" />
+      <arg value="--output" />
+      <arg value="${basedir}/build/code-browser" />
+    </exec>
+  </target>
+</project>
