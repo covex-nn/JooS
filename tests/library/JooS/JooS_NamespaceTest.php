@@ -6,6 +6,7 @@
    * Test class for JooS_Namespace.
    */
   class JooS_NamespaceTest extends PHPUnit_Framework_TestCase {
+
     /**
      * @var JooS_Namespace
      */
@@ -48,4 +49,7 @@
       $this->assertEquals(1, $this->ns->get("name"));
       $this->assertEquals(1, $this->ns->getRoot("name"));
     }
+
   }
+
+  
