@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<control>
+
+<package name="JooS" version="2.0.0.0">
+  <add>
+    <?install
+      #Phpackager_Library/path = 'library';
+
+      copy(installpath() . '/library', 'library');
+
+      event('JooS_Event_Config_Commit')
+        ->setName('Phpackager_Library')
+        ->notify();
+    ?>
+  </add>
+
+  <delete>
+    <?remove
+      cleanup();
+    ?>
+  </delete>
+</package>
+
+</control>
