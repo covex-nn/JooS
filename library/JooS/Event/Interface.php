@@ -1,5 +1,8 @@
 <?php
 
+  /**
+   * @package JooS
+   */
   interface JooS_Event_Interface {
     public static function getInstance();
 

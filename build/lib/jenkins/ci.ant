@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Jenkins-Jobs">
-  <property name="source" value="${basedir}/library"/>
-
-  <target name="build" depends="CI-clean">
+  <property name="CI.basedir" value="${basedir}" />
+  
+  <property name="CI.dir" value="${CI.basedir}/ci" />
+  <property name="CI.source" value="${HOME_DIR}/library"/>
+  <property name="CI.tests" value="${HOME_DIR}/tests"/>
+  
+  <property name="CI.pdepend" value="pdepend" />
+  <property name="CI.phpmd" value="phpmd" />
+  <property name="CI.phpcpd" value="phpcpd" />
+  <property name="CI.phpcs" value="phpcs" />
+  <property name="CI.phpdoc" value="phpdoc" />
+  <property name="CI.phploc" value="phploc" />
+  <property name="CI.phpunit" value="phpunit" />
+  <property name="CI.phpcb" value="phpcb" />
+  
+  <target name="CI-build" depends="CI-clean" description="Run pdepend, phpmd, phpcpd, phpcs, phpdoc, phploc, phpunit, phpcb">
     <antcall target="CI-pdepend" />
     <antcall target="CI-phpmd" />
     <antcall target="CI-phpcpd" />
@@ -14,84 +27,95 @@
   </target>
   
   <target name="CI-clean">
-    <delete dir="${basedir}/build/api"/>
-    <delete dir="${basedir}/build/code-browser"/>
-    <delete dir="${basedir}/build/coverage"/>
-    <delete dir="${basedir}/build/logs"/>
-    <delete dir="${basedir}/build/pdepend"/>
-    <mkdir dir="${basedir}/build/api"/>
-    <mkdir dir="${basedir}/build/code-browser"/>
-    <mkdir dir="${basedir}/build/coverage"/>
-    <mkdir dir="${basedir}/build/logs"/>
-    <mkdir dir="${basedir}/build/pdepend"/>
+    <delete dir="${CI.dir}/api"/>
+    <delete dir="${CI.dir}/code-browser"/>
+    <delete dir="${CI.dir}/coverage"/>
+    <delete dir="${CI.dir}/logs"/>
+    <delete dir="${CI.dir}/pdepend"/>
+    
+    <mkdir dir="${CI.dir}/api"/>
+    <mkdir dir="${CI.dir}/code-browser"/>
+    <mkdir dir="${CI.dir}/coverage"/>
+    <mkdir dir="${CI.dir}/logs"/>
+    <mkdir dir="${CI.dir}/pdepend"/>
   </target>
   
-  <target name="CI-pdepend" description="Generate jdepend.xml and software metrics charts using PHP_Depend">
-    <exec executable="pdepend">
-      <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
-      <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
-      <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
-      <arg value="${source}"/>
+  <!-- Generate jdepend.xml and software metrics charts using PHP_Depend -->
+  <target name="CI-pdepend">
+    <exec executable="${CI.pdepend}" dir="${CI.dir}">
+      <arg value="--jdepend-xml=logs/jdepend.xml" />
+      <arg value="--jdepend-chart=pdepend/dependencies.svg" />
+      <arg value="--overview-pyramid=pdepend/overview-pyramid.svg" />
+      <arg value="${CI.source}"/>
     </exec>
   </target>
 
-  <target name="CI-phpmd" description="Generate pmd.xml using PHPMD">
-    <exec executable="phpmd">
-      <arg value="${source}" />
+  <!-- Generate pmd.xml using PHPMD -->
+  <target name="CI-phpmd">
+    <exec executable="${CI.phpmd}" dir="${CI.dir}">
+      <arg value="${CI.source}" />
       <arg value="xml" />
       <arg value="codesize,design,naming,unusedcode" />
       <arg value="--reportfile" />
-      <arg value="${basedir}/build/logs/pmd.xml" />
+      <arg value="logs/pmd.xml" />
     </exec>
   </target>
   
-  <target name="CI-phpcpd" description="Generate pmd-cpd.xml using PHPCPD">
-    <exec executable="phpcpd">
+  <!-- Generate pmd-cpd.xml using PHPCPD -->
+  <target name="CI-phpcpd">
+    <exec executable="${CI.phpcpd}" dir="${CI.dir}">
       <arg value="--log-pmd" />
-      <arg value="${basedir}/build/logs/pmd-cpd.xml" />
-      <arg value="${source}"/>
+      <arg value="logs/pmd-cpd.xml" />
+      <arg value="${CI.source}"/>
     </exec>
   </target>
   
-  <target name="CI-phpcs" description="Generate checkstyle.xml using PHP_CodeSniffer">
-    <exec executable="phpcs" output="/dev/null">
+  <!-- Generate checkstyle.xml using PHP_CodeSniffer -->
+  <target name="CI-phpcs">
+    <exec executable="${CI.phpcs}" dir="${CI.dir}">
       <arg value="--report=checkstyle" />
-      <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
+      <arg value="--report-file=logs/checkstyle.xml" />
       <arg value="--standard=Zend" />
-      <arg value="${source}"/>
+      <arg value="${CI.source}"/>
     </exec>
   </target>
   
-  <target name="CI-phpdoc" description="Generate API documentation using PHPDocumentor">
-    <exec executable="phpdoc">
+  <!-- Generate API documentation using PHPDocumentor -->
+  <target name="CI-phpdoc">
+    <exec executable="${CI.phpdoc}" dir="${CI.dir}">
       <arg value="-d" />
-      <arg value="${source}" />
+      <arg value="${CI.source}" />
       <arg value="-t" />
-      <arg value="${basedir}/build/api" />
+      <arg value="api" />
     </exec>
   </target>
   
-  <target name="CI-phploc" description="Generate phploc.csv">
-    <exec executable="phploc">
+  <!-- Generate phploc.csv -->
+  <target name="CI-phploc">
+    <exec executable="${CI.phploc}" dir="${CI.dir}">
       <arg value="--log-csv" />
-      <arg value="${basedir}/build/logs/phploc.csv" />
-      <arg value="${source}" />
+      <arg value="logs/phploc.csv" />
+      <arg value="${CI.source}" />
     </exec>
   </target>
   
-  <target name="CI-phpunit" description="Run unit tests using PHPUnit and generates junit.xml and clover.xml">
-    <exec executable="phpunit" failonerror="true">
+  <!-- Run unit tests using PHPUnit and generates junit.xml and clover.xml -->
+  <target name="CI-phpunit">
+    <exec executable="${CI.phpunit}" dir="${CI.basedir}" failonerror="true">
+      <arg value="--bootstrap" />
+      <arg value="${CI.tests}/bootstrap.php" />
     </exec>
   </target>
 
-  <target name="CI-phpcb" description="Aggregate tool output with PHP_CodeBrowser">
-    <exec executable="phpcb">
+  <!-- Aggregate tool output with PHP_CodeBrowser -->
+  <target name="CI-phpcb">
+    <exec executable="${CI.phpcb}" dir="${CI.dir}">
       <arg value="--log" />
-      <arg value="${basedir}/build/logs" />
+      <arg value="logs" />
       <arg value="--source" />
-      <arg value="${source}" />
+      <arg value="${CI.source}" />
       <arg value="--output" />
-      <arg value="${basedir}/build/code-browser" />
+      <arg value="code-browser" />
     </exec>
   </target>
 </project>
