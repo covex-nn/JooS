@@ -1,7 +1,11 @@
 <?php
-  
- /**
-  * @package JooS
-  */
-  class JooS_Exception extends Exception {
+
+  /**
+   * @package JooS
+   */
+  class JooS_Exception extends Exception
+  {
+    
   }
+
+  
