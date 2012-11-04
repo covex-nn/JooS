@@ -5,6 +5,6 @@
  */
 class JooS_Exception extends Exception
 {
-  
+    
 }
 
