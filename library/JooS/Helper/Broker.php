@@ -190,10 +190,10 @@ final class JooS_Helper_Broker implements ArrayAccess
                 throw new JooS_Helper_Exception("Helper '$helper' was not found");
             }
 
-            $r_Helper = new ReflectionClass($className);
-            if ($r_Helper->implementsInterface("JooS_Helper_Interface")) {
-                self::$_loadedHelpers[$helper] = $r_Helper;
-                $r_Helper->getMethod("init")->invoke(null);
+            $rHelper = new ReflectionClass($className);
+            if ($rHelper->implementsInterface("JooS_Helper_Interface")) {
+                self::$_loadedHelpers[$helper] = $rHelper;
+                $rHelper->getMethod("init")->invoke(null);
             } else {
                 require_once "JooS/Helper/Exception.php";
 
