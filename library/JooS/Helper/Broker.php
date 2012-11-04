@@ -59,9 +59,9 @@ final class JooS_Helper_Broker implements ArrayAccess
         return $newInstance;
     }
 
-    public function __call($helper, $argv)
+    public function __call($helper, $arguments)
     {
-        self::_getHelperReflection($helper);
+        return self::_getHelperReflection($helper);
     }
 
     /**

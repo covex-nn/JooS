@@ -9,11 +9,6 @@ abstract class JooS_Event implements JooS_Event_Interface
 {
 
     /**
-     * @var string
-     */
-    private $_name = null;
-
-    /**
      * @var array
      */
     private $_observers;

@@ -163,10 +163,18 @@ class JooS_Config implements ArrayAccess, Iterator
         }
     }
 
-    public function __call($name, $param)
+    /**
+     * @param string $name
+     * @param array $arguments
+     * @return mixed
+     */
+    public function __call($name, $arguments)
     {
         $config = $this->__get($name);
         return is_null($config) ? null : $config->valueOf();
+        
+        if ($arguments) {
+        }
     }
 
     public function __invoke()
@@ -183,6 +191,9 @@ class JooS_Config implements ArrayAccess, Iterator
     public static function __callStatic($name, $arguments)
     {
         return self::getInstance($name);
+        
+        if ($arguments) {
+        }
     }
 
     public function offsetGet($key)
@@ -217,7 +228,7 @@ class JooS_Config implements ArrayAccess, Iterator
 
     public function next()
     {
-        list(, $next) = each($this->_data);
+        each($this->_data);
         return $this->current();
     }
 
