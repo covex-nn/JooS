@@ -131,7 +131,9 @@ class JooS_Config implements ArrayAccess, Iterator
     public function __set($key, $value)
     {
         if (!is_array($this->_data)) {
-            trigger_error("Cannot use a scalar value as an array", E_USER_NOTICE);
+            trigger_error(
+              "Cannot use a scalar value as an array", E_USER_NOTICE
+            );
             return;
         }
 
@@ -150,7 +152,7 @@ class JooS_Config implements ArrayAccess, Iterator
 
     public function __isset($key)
     {
-        return is_array($this->_data) && isset($this->_data[$key]) ? true : false;
+        return is_array($this->_data) && isset($this->_data[$key]);
     }
 
     public function __unset($key)
