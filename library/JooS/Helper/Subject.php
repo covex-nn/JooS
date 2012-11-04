@@ -1,9 +1,11 @@
 <?php
 
- /**
-  * @package JooS
-  */
+/**
+ * @package JooS
+ */
+interface JooS_Helper_Subject
+{
 
-  interface JooS_Helper_Subject {
     public function helperBroker();
-  }
+
+}

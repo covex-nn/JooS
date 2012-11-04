@@ -65,8 +65,8 @@ class JooS_Loader
 
         return implode(
             DIRECTORY_SEPARATOR, array(
-            JooS_Config::PHPackager()->path(),
-            self::getRelativePath($className, $ext)
+              JooS_Config::PHPackager()->path(),
+              self::getRelativePath($className, $ext)
             )
         );
     }

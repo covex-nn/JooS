@@ -7,6 +7,8 @@ class JooS_Config implements ArrayAccess, Iterator
 {
 
     const CLASS_PREFIX = "JooSX_Config";
+    const ERROR_CANNOT_USE_SCALAR = "Cannot use a scalar value as an array";
+    const ERROR_TYPE_MISMATCH = "Type mismatch";
 
     /**
      * @var array
@@ -131,9 +133,7 @@ class JooS_Config implements ArrayAccess, Iterator
     public function __set($key, $value)
     {
         if (!is_array($this->_data)) {
-            trigger_error(
-              "Cannot use a scalar value as an array", E_USER_NOTICE
-            );
+            trigger_error(self::ERROR_CANNOT_USE_SCALAR, E_USER_NOTICE);
             return;
         }
 
@@ -142,7 +142,7 @@ class JooS_Config implements ArrayAccess, Iterator
         } elseif (is_object($value) && $value instanceof JooS_Config) {
             $newValue = $value->valueOf();
         } else {
-            trigger_error("Type mismatch", E_USER_NOTICE);
+            trigger_error(self::ERROR_TYPE_MISMATCH, E_USER_NOTICE);
             return;
         }
 
