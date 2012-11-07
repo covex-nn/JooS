@@ -75,7 +75,7 @@
     <exec executable="${CI.phpcs}" dir="${CI.dir}">
       <arg value="--report=checkstyle" />
       <arg value="--report-file=logs/checkstyle.xml" />
-      <arg value="--standard=Zend" />
+      <arg value="--standard=PEAR" />
       <arg value="${CI.source}"/>
     </exec>
   </target>
