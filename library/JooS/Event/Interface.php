@@ -1,9 +1,11 @@
 <?php
 
 /**
- * Интерфейс для события.
- * 
  * @package JooS
+ */
+
+/**
+ * Интерфейс для события.
  */
 interface JooS_Event_Interface
 {
@@ -27,7 +29,7 @@ interface JooS_Event_Interface
   /**
    * Attach observer.
    * 
-   * @param callback $observer Обработчик
+   * @param callback $observer Observer
    * 
    * @return JooS_Event_Interface
    */
@@ -36,7 +38,8 @@ interface JooS_Event_Interface
   /**
    * Detach observer.
    * 
-   * @param type $observer Обработчик
+   * @param type $observer Observer
+   * 
    * @return JooS_Event_Interface
    */
   public function detach($observer);
@@ -44,8 +47,8 @@ interface JooS_Event_Interface
   /**
    * Cancel event.
    * 
-   * @param string $message Message для JooS_Event_Exception
-   * @param int    $code    Code для JooS_Event_Exception
+   * @param string $message Message for JooS_Event_Exception
+   * @param int    $code    Code for JooS_Event_Exception
    * 
    * @return null
    */

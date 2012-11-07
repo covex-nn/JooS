@@ -73,6 +73,7 @@
   <!-- Generate checkstyle.xml using PHP_CodeSniffer -->
   <target name="CI-phpcs">
     <exec executable="${CI.phpcs}" dir="${CI.dir}">
+      <arg value="--encoding=utf-8" />
       <arg value="--report=checkstyle" />
       <arg value="--report-file=logs/checkstyle.xml" />
       <arg value="--standard=../phpcs.xml" />
