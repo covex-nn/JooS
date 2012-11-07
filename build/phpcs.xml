@@ -4,8 +4,9 @@
 
  <!-- Include the whole PEAR standard except ... -->
  <rule ref="PEAR">
-  <exclude name="PEAR.Commenting.FileComment"/>
-  <exclude name="PEAR.Commenting.ClassComment"/>
+  <exclude name="PEAR.Commenting.FileComment" />
+  <exclude name="PEAR.Commenting.ClassComment" />
+  <exclude name="PEAR.WhiteSpace.ScopeIndent" />
  </rule>
 
  <rule ref="Zend.NamingConventions.ValidVariableName" />
