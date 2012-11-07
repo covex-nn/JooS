@@ -92,7 +92,7 @@ final class JooS_Helper_Broker implements ArrayAccess
   }
 
   /**
-   * Returns helper
+   * Returns helper.
    * 
    * @param string $helper
    * 
@@ -172,6 +172,8 @@ final class JooS_Helper_Broker implements ArrayAccess
   }
 
   /**
+   * Returns helper.
+   * 
    * @param string $helper
    * 
    * @return JooS_Helper_Abstract

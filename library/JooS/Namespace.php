@@ -5,7 +5,7 @@
  */
 
 /**
- * #value/value
+ * Namespace from CityDNK for #value/value .
  */
 final class JooS_Namespace
 {
@@ -32,6 +32,9 @@ final class JooS_Namespace
    */
   private $_pushedData;
 
+  /**
+   * @var int
+   */
   private static $_pushID = 1;
 
   /**
@@ -50,7 +53,7 @@ final class JooS_Namespace
   /**
    * Sets value.
    * 
-   * @param string $get
+   * @param string &$get
    * @param mixed $value
    * 
    * @return null

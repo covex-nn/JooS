@@ -32,11 +32,11 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Protected constructor.
    * 
-   * @param array $data
+   * @param array &$data
    */
   protected function __construct(&$data)
   {
-    $this->_data = &$data;
+    $this->_data = $data;
     reset($this);
   }
 

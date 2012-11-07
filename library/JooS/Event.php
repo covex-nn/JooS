@@ -96,8 +96,9 @@ abstract class JooS_Event implements JooS_Event_Interface
    * Sets notify data item.
    * 
    * @param string $name
-   * 
    * @param mixed $value
+   * 
+   * @return null
    */
   public function __set($name, $value)
   {

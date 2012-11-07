@@ -21,6 +21,8 @@ interface JooS_Helper_Interface
    * Set subject.
    * 
    * @param type $subject
+   * 
+   * @return JooS_Helper_Interface
    */
   public function setSubject($subject);
 

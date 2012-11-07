@@ -18,6 +18,8 @@ abstract class JooS_Helper_Abstract implements JooS_Helper_Interface
 
   /**
    * No initialization code yet. Can be overwrited.
+   * 
+   * @return null
    */
   public static function init()
   {
