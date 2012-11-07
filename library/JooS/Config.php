@@ -3,245 +3,362 @@
 /**
  * @package JooS
  */
+
+/**
+ * Configuration.
+ */
 class JooS_Config implements ArrayAccess, Iterator
 {
 
-    const CLASS_PREFIX = "JooSX_Config";
-    const ERROR_CANNOT_USE_SCALAR = "Cannot use a scalar value as an array";
-    const ERROR_TYPE_MISMATCH = "Type mismatch";
+  const CLASS_PREFIX = "JooSX_Config";
 
-    /**
-     * @var array
-     */
-    private $_data;
-    private $_className = null;
-    private $_root = null;
-    private $_modified = null;
-    private static $_instances = array();
+  const ERROR_CANNOT_USE_SCALAR = "Cannot use a scalar value as an array";
 
-    protected function __construct(&$data)
-    {
-        $this->_data = &$data;
-        reset($this);
+  const ERROR_TYPE_MISMATCH = "Type mismatch";
+
+  /**
+   * @var array
+   */
+  private $_data;
+
+  private $_className = null;
+
+  private $_root = null;
+
+  private $_modified = null;
+
+  private static $_instances = array();
+
+  /**
+   * Protected constructor.
+   * 
+   * @param array $data
+   */
+  protected function __construct(&$data)
+  {
+    $this->_data = &$data;
+    reset($this);
+  }
+
+  /**
+   * Returns config instance
+   * 
+   * @param string $name
+   * 
+   * @return JooS_Config
+   */
+  public static function getInstance($name)
+  {
+    require_once "JooS/Loader.php";
+
+    $className = self::getClassName($name);
+    if (!isset(self::$_instances[$className])) {
+      if (JooS_Loader::loadClass($className)) {
+        $config = new $className();
+      } else {
+        $data = array();
+        $config = new self($data);
+      }
+
+      /* @var $config JooS_Config */
+      $config->_className = $className;
+      $config->_root = $config;
+
+      self::$_instances[$className] = $config;
+    }
+    return self::$_instances[$className];
+  }
+
+  /**
+   * Unloads config instance.
+   * 
+   * @param string $name
+   * 
+   * @return null
+   */
+  public static function clearInstance($name)
+  {
+    $className = self::getClassName($name);
+    if (isset(self::$_instances[$className])) {
+      unset(self::$_instances[$className]);
+    }
+  }
+
+  /**
+   * Returns className for config instance.
+   * 
+   * @param string $name
+   * 
+   * @return string
+   */
+  public static function getClassName($name)
+  {
+    require_once "JooS/Loader.php";
+
+    return JooS_Loader::getClassName(self::CLASS_PREFIX, $name, true);
+  }
+
+  /**
+   * Shortcut for instance creation.
+   * 
+   * @param string $name
+   * @param array $data
+   * 
+   * @return JooS_Config
+   */
+  public static function newInstance($name, $data = null)
+  {
+    if (!is_array($data)) {
+      $data = array();
     }
 
-    /**
-     *
-     * @param string $name
-     * @return JooS_Config
-     */
-    public static function getInstance($name)
-    {
-        require_once "JooS/Loader.php";
+    $config = self::getInstance($name);
+    $config->_data = $data;
 
-        $className = self::getClassName($name);
-        if (!isset(self::$_instances[$className])) {
-            if (JooS_Loader::loadClass($className)) {
-                $config = new $className();
-            } else {
-                $data = array();
-                $config = new self($data);
-            }
+    return $config;
+  }
 
-            /* @var $config JooS_Config */
-            $config->_className = $className;
-            $config->_root = $config;
+  /**
+   * Returns config data.
+   * 
+   * @return array
+   */
+  public function valueOf()
+  {
+    return $this->_data;
+  }
 
-            self::$_instances[$className] = $config;
-        }
-        return self::$_instances[$className];
+  /**
+   * Returns config class.
+   * 
+   * @return string
+   */
+  public function get_class()
+  {
+    return $this->_className;
+  }
+
+  /**
+   * Is config modified?
+   * 
+   * @return bool
+   */
+  public function is_modified()
+  {
+    return $this->_root->_modified;
+  }
+
+  /**
+   * Get value.
+   * 
+   * @param string $key
+   * 
+   * @return JooS_Config
+   */
+  public function __get($key)
+  {
+    if ($this->__isset($key)) {
+      $config = new self($this->_data[$key]);
+      $config->_root = $this->_root;
+    } else {
+      $config = null;
     }
 
-    /**
-     *
-     * @param string $name
-     */
-    public static function clearInstance($name)
-    {
-        $className = self::getClassName($name);
-        if (isset(self::$_instances[$className])) {
-            unset(self::$_instances[$className]);
-        }
+    return $config;
+  }
+
+  /**
+   * Sets value.
+   * 
+   * @param string $key
+   * @param mixed $value
+   * 
+   * @return null
+   */
+  public function __set($key, $value)
+  {
+    if (!is_array($this->_data)) {
+      trigger_error(self::ERROR_CANNOT_USE_SCALAR, E_USER_NOTICE);
+      return;
     }
 
-    /**
-     *
-     * @param string $name
-     * @return string
-     */
-    public static function getClassName($name)
-    {
-        require_once "JooS/Loader.php";
-
-        return JooS_Loader::getClassName(self::CLASS_PREFIX, $name, true);
+    if (is_array($value) || is_scalar($value)) {
+      $newValue = $value;
+    } elseif (is_object($value) && $value instanceof JooS_Config) {
+      $newValue = $value->valueOf();
+    } else {
+      trigger_error(self::ERROR_TYPE_MISMATCH, E_USER_NOTICE);
+      return;
     }
 
-    /**
-     *
-     * @param string $name
-     * @param array $data
-     * @return JooS_Config
-     */
-    public static function newInstance($name, $data = null)
-    {
-        if (!is_array($data)) {
-            $data = array();
-        }
+    $this->_data[$key] = $newValue;
+    $this->_root->_modified = true;
+  }
 
-        $config = self::getInstance($name);
-        $config->_data = $data;
+  /**
+   * Is value set ?
+   * 
+   * @param string $key
+   * 
+   * @return boolean
+   */
+  public function __isset($key)
+  {
+    return is_array($this->_data) && isset($this->_data[$key]);
+  }
 
-        return $config;
+  /**
+   * Unsets value.
+   * 
+   * @param string $key
+   * 
+   * @return null
+   */
+  public function __unset($key)
+  {
+    if ($this->__isset($key)) {
+      unset($this->_data[$key]);
+      $this->_root->_modified = true;
     }
+  }
 
-    /**
-     * @return array
-     */
-    public function valueOf()
-    {
-        return $this->_data;
-    }
+  /**
+   * Returns value.
+   * 
+   * @param string $name
+   * @param array $arguments
+   * 
+   * @return mixed
+   */
+  public function __call($name, $arguments)
+  {
+    $config = $this->__get($name);
+    return is_null($config) ? null : $config->valueOf();
+  }
 
-    /**
-     * @return string
-     */
-    public function get_class()
-    {
-        return $this->_className;
-    }
+  /**
+   * Return all data.
+   * 
+   * @return array
+   */
+  public function __invoke()
+  {
+    return $this->valueOf();
+  }
 
-    /**
-     * @return bool
-     */
-    public function is_modified()
-    {
-        return $this->_root->_modified;
-    }
+  /**
+   * Returns instance.
+   * 
+   * @param string $name
+   * @param array $arguments
+   * 
+   * @return JooS_Config
+   */
+  public static function __callStatic($name, $arguments)
+  {
+    return self::getInstance($name);
+  }
 
-    public function __get($key)
-    {
-        if ($this->__isset($key)) {
-            $config = new self($this->_data[$key]);
-            $config->_root = $this->_root;
-        } else {
-            $config = null;
-        }
+  /**
+   * Get value.
+   * 
+   * @param string $key
+   * 
+   * @return JooS_Config
+   */
+  public function offsetGet($key)
+  {
+    return $this->__get($key);
+  }
 
-        return $config;
-    }
+  /**
+   * Sets value.
+   * 
+   * @param string $key
+   * @param mixed $value
+   * 
+   * @return null
+   */
+  public function offsetSet($key, $value)
+  {
+    $this->__set($key, $value);
+  }
 
-    public function __set($key, $value)
-    {
-        if (!is_array($this->_data)) {
-            trigger_error(self::ERROR_CANNOT_USE_SCALAR, E_USER_NOTICE);
-            return;
-        }
+  /**
+   * Is value set ?
+   * 
+   * @param string $key
+   * 
+   * @return boolean
+   */
+  public function offsetExists($key)
+  {
+    return $this->__isset($key);
+  }
 
-        if (is_array($value) || is_scalar($value)) {
-            $newValue = $value;
-        } elseif (is_object($value) && $value instanceof JooS_Config) {
-            $newValue = $value->valueOf();
-        } else {
-            trigger_error(self::ERROR_TYPE_MISMATCH, E_USER_NOTICE);
-            return;
-        }
+  /**
+   * Unsets value.
+   * 
+   * @param string $key
+   * 
+   * @return null
+   */
+  public function offsetUnset($key)
+  {
+    $this->__unset($key);
+  }
 
-        $this->_data[$key] = $newValue;
-        $this->_root->_modified = true;
-    }
+  /**
+	 * Return the current element.
+   * 
+   * @return string
+   */
+  public function current()
+  {
+    return $this->__get($this->key());
+  }
 
-    public function __isset($key)
-    {
-        return is_array($this->_data) && isset($this->_data[$key]);
-    }
+  /**
+	 * Return the key of the current element
+   * 
+   * @return string
+   */
+  public function key()
+  {
+    return key($this->_data);
+  }
 
-    public function __unset($key)
-    {
-        if ($this->__isset($key)) {
-            unset($this->_data[$key]);
-            $this->_root->_modified = true;
-        }
-    }
+  /**
+	 * Move forward to next element
+   * 
+   * @return string
+   */
+  public function next()
+  {
+    each($this->_data);
+    return $this->current();
+  }
 
-    /**
-     * @param string $name
-     * @param array $arguments
-     * @return mixed
-     */
-    public function __call($name, $arguments)
-    {
-        $config = $this->__get($name);
-        return is_null($config) ? null : $config->valueOf();
-        
-        if ($arguments) {
-        }
-    }
+  /**
+	 * Rewind the Iterator to the first element
+   * 
+   * @return null
+   */
+  public function rewind()
+  {
+    reset($this->_data);
+  }
 
-    public function __invoke()
-    {
-        return $this->valueOf();
-    }
-
-    /**
-     *
-     * @param string $name
-     * @param array $arguments
-     * @return JooS_Config
-     */
-    public static function __callStatic($name, $arguments)
-    {
-        return self::getInstance($name);
-        
-        if ($arguments) {
-        }
-    }
-
-    public function offsetGet($key)
-    {
-        return $this->__get($key);
-    }
-
-    public function offsetSet($key, $value)
-    {
-        $this->__set($key, $value);
-    }
-
-    public function offsetExists($key)
-    {
-        return $this->__isset($key);
-    }
-
-    public function offsetUnset($key)
-    {
-        $this->__unset($key);
-    }
-
-    public function current()
-    {
-        return $this->__get($this->key());
-    }
-
-    public function key()
-    {
-        return key($this->_data);
-    }
-
-    public function next()
-    {
-        each($this->_data);
-        return $this->current();
-    }
-
-    public function rewind()
-    {
-        reset($this->_data);
-    }
-
-    public function valid()
-    {
-        $key = $this->key();
-        return is_null($key) ? false : isset($this->_data[$key]);
-    }
+  /**
+	 * Checks if current position is valid
+   * 
+   * @return boolean
+   */
+  public function valid()
+  {
+    $key = $this->key();
+    return is_null($key) ? false : isset($this->_data[$key]);
+  }
 
 }
 

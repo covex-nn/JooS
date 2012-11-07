@@ -3,11 +3,25 @@
 /**
  * @package JooS
  */
+
+/**
+ * Interface for Helpers
+ */
 interface JooS_Helper_Interface
 {
 
-    public static function init();
+  /**
+   * Initialization
+   * 
+   * @return null
+   */
+  public static function init();
 
-    public function setSubject($subject);
+  /**
+   * Set subject.
+   * 
+   * @param type $subject
+   */
+  public function setSubject($subject);
 
 }

@@ -3,8 +3,6 @@
 /**
  * @package JooS
  */
-
-/** @see JooS_Exception */
 require_once "JooS/Exception.php";
 
 /**

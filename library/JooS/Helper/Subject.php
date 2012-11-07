@@ -3,9 +3,18 @@
 /**
  * @package JooS
  */
+
+/**
+ * Interface for Helper Subject
+ */
 interface JooS_Helper_Subject
 {
 
-    public function helperBroker();
+  /**
+   * creates Helper Broker for object
+   * 
+   * @return JooS_Helper_Broker
+   */
+  public function helperBroker();
 
 }
