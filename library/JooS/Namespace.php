@@ -3,6 +3,10 @@
 /**
  * @package JooS
  */
+
+/**
+ * #value/value
+ */
 final class JooS_Namespace
 {
 
@@ -81,10 +85,11 @@ final class JooS_Namespace
   public function &getBack($times, $path = '')
   {
     $level = sizeof($this->_names) - 1;
-    if ($level <= $times)
+    if ($level <= $times) {
       $this->_tmp = &$this->_data;
-    else
+    } else {
       $this->_tmp = &$this->_names[$level - $times];
+    }
 
     $this->_shiftTmp($path);
     return $this->_tmp;
@@ -143,10 +148,12 @@ final class JooS_Namespace
     if ($path) {
       $names = explode(self::DELIMITER, $path);
       foreach ($names as $name) {
-        if (!is_array($this->_tmp))
+        if (!is_array($this->_tmp)) {
           $this->_tmp = array();
-        if (!isset($this->_tmp[$name]))
+        }
+        if (!isset($this->_tmp[$name])) {
           $this->_tmp[$name] = null;
+        }
 
         $this->_tmp = &$this->_tmp[$name];
       }

@@ -3,6 +3,10 @@
 /**
  * @package JooS
  */
+
+/**
+ * Class Loader.
+ */
 class JooS_Loader
 {
 
@@ -60,7 +64,7 @@ class JooS_Loader
     require_once "JooS/Config.php";
 
     $library = JooS_Config::PHPackager_Library()->path() ? : "library";
-    
+
     return $library . DIRECTORY_SEPARATOR . self::getPath($className, $ext);
   }
 

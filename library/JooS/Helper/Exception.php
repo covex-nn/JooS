@@ -6,7 +6,7 @@
 require_once "JooS/Exception.php";
 
 /**
- * Exception
+ * Exception.
  */
 class JooS_Helper_Exception extends JooS_Exception
 {

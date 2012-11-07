@@ -14,4 +14,11 @@
 
  <rule ref="Zend.NamingConventions.ValidVariableName" />
  <rule ref="Squiz.Commenting.ClassComment" />
+
+ <rule ref="PEAR.WhiteSpace.ScopeClosingBrace">
+  <properties>
+   <property name="indent" value="2"/>
+  </properties>
+ </rule>
+ 
 </ruleset>

@@ -6,9 +6,7 @@
 require_once "JooS/Helper/Interface.php";
 
 /**
- * Helper abstract
- * 
- * @abstract
+ * Helper abstract.
  */
 abstract class JooS_Helper_Abstract implements JooS_Helper_Interface
 {
