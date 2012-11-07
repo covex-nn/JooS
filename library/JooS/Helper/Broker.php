@@ -243,7 +243,8 @@ final class JooS_Helper_Broker implements ArrayAccess
   private function _getHelper($helper)
   {
     if (!isset($this->_helpers[$helper])) {
-      $this->_helpers[$helper] = self::_getHelperReflection($helper)->newInstance();
+      $reflection = self::_getHelperReflection($helper);
+      $this->_helpers[$helper] = $reflection->newInstance();
       $this->_helpers[$helper]->setSubject($this->_subject);
     }
     return $this->_helpers[$helper];
