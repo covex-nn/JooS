@@ -7,7 +7,11 @@
   <exclude name="PEAR.Commenting.FileComment" />
   <exclude name="PEAR.Commenting.ClassComment" />
   <exclude name="PEAR.WhiteSpace.ScopeIndent" />
+  <exclude name="PEAR.NamingConventions.ValidFunctionName" />
+  <exclude name="PEAR.NamingConventions.ValidVariableName" />
+  <exclude name="PEAR.Files.IncludingFile" />
  </rule>
 
  <rule ref="Zend.NamingConventions.ValidVariableName" />
+ <rule ref="Squiz.Commenting.ClassComment" />
 </ruleset>
