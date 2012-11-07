@@ -9,27 +9,32 @@ interface JooS_Event_Interface
 {
 
   /**
-   * Создание инстанса события
+   * Create event instance.
    * 
    * @todo Проверить все ли события используют new static ?
+   * 
+   * @return JooS_Event_Interface
    */
   public static function getInstance();
 
   /**
-   * Запуск возникновения события
+   * Notify observers.
+   * 
+   * @return JooS_Event_Interface
    */
   public function notify();
 
   /**
-   * Присоединить обработчик события
+   * Attach observer.
    * 
    * @param callback $observer Обработчик
+   * 
    * @return JooS_Event_Interface
    */
   public function attach($observer);
 
   /**
-   * Отсоединить обработчик события
+   * Detach observer.
    * 
    * @param type $observer Обработчик
    * @return JooS_Event_Interface
@@ -37,20 +42,26 @@ interface JooS_Event_Interface
   public function detach($observer);
 
   /**
-   * Отмена события
+   * Cancel event.
    * 
    * @param string $message Message для JooS_Event_Exception
-   * @param int $code Code для JooS_Event_Exception
+   * @param int    $code    Code для JooS_Event_Exception
+   * 
+   * @return null
    */
   public function cancel($message = null, $code = null);
 
   /**
-   * Возвращает имя события
+   * Returns event's name
+   * 
+   * @return string
    */
   public function name();
 
   /**
-   * Возвращает список обзёрверов
+   * Returns list of observers
+   * 
+   * @return array
    */
   public function observers();
 

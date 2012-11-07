@@ -4,7 +4,7 @@
 require_once "JooS/Exception.php";
 
 /**
- * Исключение для "отмены" события.
+ * Exception for event's cancelation.
  * 
  * @package JooS
  */
