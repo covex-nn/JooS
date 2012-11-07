@@ -29,7 +29,7 @@ abstract class JooS_Helper_Abstract implements JooS_Helper_Interface
   /**
    * Set helper's subject
    * 
-   * @param JooS_Helper_Subject $subject
+   * @param JooS_Helper_Subject $subject Subject
    * 
    * @return JooS_Helper_Abstract
    */

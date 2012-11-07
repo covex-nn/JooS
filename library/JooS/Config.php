@@ -32,7 +32,7 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Protected constructor.
    * 
-   * @param array &$data
+   * @param array &$data Config Data
    */
   protected function __construct(&$data)
   {
@@ -43,7 +43,7 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Returns config instance
    * 
-   * @param string $name
+   * @param string $name Config name
    * 
    * @return JooS_Config
    */
@@ -72,7 +72,7 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Unloads config instance.
    * 
-   * @param string $name
+   * @param string $name Config name
    * 
    * @return null
    */
@@ -87,7 +87,7 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Returns className for config instance.
    * 
-   * @param string $name
+   * @param string $name Config name
    * 
    * @return string
    */
@@ -101,8 +101,8 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Shortcut for instance creation.
    * 
-   * @param string $name
-   * @param array $data
+   * @param string $name Config name
+   * @param array  $data Config data
    * 
    * @return JooS_Config
    */
@@ -151,7 +151,7 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Get value.
    * 
-   * @param string $key
+   * @param string $key Key
    * 
    * @return JooS_Config
    */
@@ -170,8 +170,8 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Sets value.
    * 
-   * @param string $key
-   * @param mixed $value
+   * @param string $key   Key
+   * @param mixed  $value Value
    * 
    * @return null
    */
@@ -198,7 +198,7 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Is value set ?
    * 
-   * @param string $key
+   * @param string $key Key
    * 
    * @return boolean
    */
@@ -210,7 +210,7 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Unsets value.
    * 
-   * @param string $key
+   * @param string $key Key
    * 
    * @return null
    */
@@ -225,8 +225,8 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Returns value.
    * 
-   * @param string $name
-   * @param array $arguments
+   * @param string $name      Key
+   * @param array  $arguments Argiments (not used)
    * 
    * @return mixed
    */
@@ -249,8 +249,8 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Returns instance.
    * 
-   * @param string $name
-   * @param array $arguments
+   * @param string $name      Config name
+   * @param array  $arguments Arguments (not used)
    * 
    * @return JooS_Config
    */
@@ -262,7 +262,7 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Get value.
    * 
-   * @param string $key
+   * @param string $key Key
    * 
    * @return JooS_Config
    */
@@ -274,8 +274,8 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Sets value.
    * 
-   * @param string $key
-   * @param mixed $value
+   * @param string $key   Key
+   * @param mixed  $value Value
    * 
    * @return null
    */
@@ -287,7 +287,7 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Is value set ?
    * 
-   * @param string $key
+   * @param string $key Key
    * 
    * @return boolean
    */
@@ -299,7 +299,7 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Unsets value.
    * 
-   * @param string $key
+   * @param string $key Key
    * 
    * @return null
    */

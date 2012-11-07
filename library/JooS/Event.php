@@ -62,7 +62,7 @@ abstract class JooS_Event implements JooS_Event_Interface
   /**
    * Is event notify data exists ?
    * 
-   * @param string $name
+   * @param string $name Key
    * 
    * @return bool
    */
@@ -75,7 +75,7 @@ abstract class JooS_Event implements JooS_Event_Interface
   /**
    * Returns notify data item.
    * 
-   * @param string $name
+   * @param string $name Key
    * 
    * @return mixed
    */
@@ -95,8 +95,8 @@ abstract class JooS_Event implements JooS_Event_Interface
   /**
    * Sets notify data item.
    * 
-   * @param string $name
-   * @param mixed $value
+   * @param string $name  Key
+   * @param mixed  $value Value
    * 
    * @return null
    */
@@ -109,7 +109,7 @@ abstract class JooS_Event implements JooS_Event_Interface
   /**
    * Unsets notify data item.
    * 
-   * @param string $name
+   * @param string $name Key
    * 
    * @return null
    */
@@ -124,8 +124,8 @@ abstract class JooS_Event implements JooS_Event_Interface
   /**
    * Sets notify data. Name of the function must begin width 'set'
    * 
-   * @param string $name
-   * @param mixed $arguments
+   * @param string $name      Magic-function name
+   * @param mixed  $arguments Arguments
    * 
    * @return JooS_Event
    */
@@ -157,7 +157,7 @@ abstract class JooS_Event implements JooS_Event_Interface
   /**
    * Returns event instance.
    * 
-   * @param string $className
+   * @param string $className Event name
    * 
    * @return JooS_Event
    */
@@ -184,7 +184,7 @@ abstract class JooS_Event implements JooS_Event_Interface
   /**
    * Unloads event instance.
    * 
-   * @param string $className
+   * @param string $className Event name
    * 
    * @return null
    */
@@ -202,8 +202,8 @@ abstract class JooS_Event implements JooS_Event_Interface
   /**
    * Cancel event execution.
    * 
-   * @param string $message
-   * @param int    $code
+   * @param string $message Exception message
+   * @param int    $code    Exception code
    * 
    * @throws JooS_Event_Exception
    * @return null
@@ -248,7 +248,7 @@ abstract class JooS_Event implements JooS_Event_Interface
   /**
    * Attach new observer.
    * 
-   * @param callback $observer
+   * @param callback $observer Observer
    * 
    * @return JooS_Event
    */
@@ -263,7 +263,7 @@ abstract class JooS_Event implements JooS_Event_Interface
   /**
    * Detach observer.
    * 
-   * @param callback $observer
+   * @param callback $observer Observer
    * 
    * @return JooS_Event 
    */
@@ -299,7 +299,7 @@ abstract class JooS_Event implements JooS_Event_Interface
   /**
    * Normalize name.
    * 
-   * @param string $name
+   * @param string $name Name
    * 
    * @return string
    */

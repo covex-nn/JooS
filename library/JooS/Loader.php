@@ -13,7 +13,7 @@ class JooS_Loader
   /**
    * Loads class.
    * 
-   * @param string $className
+   * @param string $className Class Name
    * 
    * @return bool
    */
@@ -41,8 +41,8 @@ class JooS_Loader
   /**
    * Returns class path.
    * 
-   * @param string $className
-   * @param string $ext
+   * @param string $className Class Name
+   * @param string $ext       Extention
    * 
    * @return string
    */
@@ -54,8 +54,8 @@ class JooS_Loader
   /**
    * Returns relative path to class.
    * 
-   * @param string $className
-   * @param string $ext
+   * @param string $className Class Name
+   * @param string $ext       Extention
    * 
    * @return string
    */
@@ -71,8 +71,8 @@ class JooS_Loader
   /**
    * Returns real path.
    * 
-   * @param string $className
-   * @param string $ext
+   * @param string $className Class Name
+   * @param string $ext       Extention
    * 
    * @return string
    */
@@ -91,9 +91,9 @@ class JooS_Loader
   /**
    * Returns className.
    * 
-   * @param string $prefix
-   * @param string $name
-   * @param bool   $ucfirst
+   * @param string $prefix  Prefix
+   * @param string $name    Name
+   * @param bool   $ucfirst First letter - caps
    * 
    * @return string
    */

@@ -40,7 +40,7 @@ final class JooS_Namespace
   /**
    * Constructor.
    * 
-   * @param array $data
+   * @param array $data Data
    */
   public function __construct($data = array())
   {
@@ -53,8 +53,8 @@ final class JooS_Namespace
   /**
    * Sets value.
    * 
-   * @param string &$get
-   * @param mixed $value
+   * @param string &$get  Name
+   * @param mixed  $value Value
    * 
    * @return null
    */
@@ -66,7 +66,7 @@ final class JooS_Namespace
   /**
    * Returns value #value/value
    * 
-   * @param string $path
+   * @param string $path Path
    * 
    * @return mixed
    */
@@ -80,8 +80,8 @@ final class JooS_Namespace
   /**
    * Returns value #../../value
    * 
-   * @param int $times
-   * @param string $path
+   * @param int    $times Times
+   * @param string $path  Path
    * 
    * @return mixed
    */
@@ -101,7 +101,7 @@ final class JooS_Namespace
   /**
    * Returns value #/value
    * 
-   * @param string $path
+   * @param string $path Path
    * 
    * @return mixed
    */
@@ -142,7 +142,7 @@ final class JooS_Namespace
   /**
    * It shifts.
    * 
-   * @param string $path
+   * @param string $path Path
    * 
    * @return null
    */

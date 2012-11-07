@@ -23,7 +23,7 @@ final class JooS_Helper_Broker implements ArrayAccess
   /**
    * Adds prefix to existing helpers className.
    * 
-   * @param string $prefix
+   * @param string $prefix Prefix
    * 
    * @return null
    */
@@ -66,7 +66,7 @@ final class JooS_Helper_Broker implements ArrayAccess
   /**
    * Create new helper instance for subject.
    * 
-   * @param JooS_Helper_Subject $subject
+   * @param JooS_Helper_Subject $subject Subject
    * 
    * @return JooS_Helper_Broker
    */
@@ -81,8 +81,8 @@ final class JooS_Helper_Broker implements ArrayAccess
   /**
    * Returns ReflectionClass for helper's class (???).
    * 
-   * @param string $helper Name
-   * @param array $arguments Not used
+   * @param string $helper    Name
+   * @param array  $arguments Not used
    * 
    * @return ReflectionClass
    */
@@ -94,7 +94,7 @@ final class JooS_Helper_Broker implements ArrayAccess
   /**
    * Returns helper.
    * 
-   * @param string $helper
+   * @param string $helper Name
    * 
    * @covers JooS_Helper_Broker::offsetGet
    * @return JooS_Helper_Abstract
@@ -113,7 +113,7 @@ final class JooS_Helper_Broker implements ArrayAccess
   /**
    * Is helper presents ?
    * 
-   * @param string $helper
+   * @param string $helper Name
    * 
    * @return boolean
    */
@@ -131,8 +131,8 @@ final class JooS_Helper_Broker implements ArrayAccess
   /**
    * It is not allowed to create Helper outside Broker class.
    * 
-   * @param string $name
-   * @param mixed $value
+   * @param string $name  Name
+   * @param mixed  $value Value
    * 
    * @throws JooS_Helper_Exception
    * @return null
@@ -147,7 +147,7 @@ final class JooS_Helper_Broker implements ArrayAccess
   /**
    * It it not allowed to unload helper.
    * 
-   * @param string $name
+   * @param string $name Name
    * 
    * @throws JooS_Helper_Exception
    * @return null
@@ -162,7 +162,7 @@ final class JooS_Helper_Broker implements ArrayAccess
   /**
    * Is helper presents ?
    * 
-   * @param string $helper
+   * @param string $helper Name
    * 
    * @return boolean
    */
@@ -174,7 +174,7 @@ final class JooS_Helper_Broker implements ArrayAccess
   /**
    * Returns helper.
    * 
-   * @param string $helper
+   * @param string $helper Name
    * 
    * @return JooS_Helper_Abstract
    */
@@ -186,8 +186,8 @@ final class JooS_Helper_Broker implements ArrayAccess
   /**
    * Forbidden.
    * 
-   * @param string $offset
-   * @param mixed $value
+   * @param string $offset Name
+   * @param mixed  $value  Value
    * 
    * @throws JooS_Helper_Exception
    * @return null
@@ -202,7 +202,7 @@ final class JooS_Helper_Broker implements ArrayAccess
   /**
    * Forbidden.
    * 
-   * @param type $offset
+   * @param type $offset Name
    * 
    * @throws JooS_Helper_Exception
    * @return null
@@ -236,7 +236,7 @@ final class JooS_Helper_Broker implements ArrayAccess
   /**
    * Creates a new helper's instance
    * 
-   * @param string $helper
+   * @param string $helper Name
    * 
    * @return JooS_Helper_Abstract
    */
@@ -252,7 +252,7 @@ final class JooS_Helper_Broker implements ArrayAccess
   /**
    * Returns ReflectionClass.
    * 
-   * @param string $helper
+   * @param string $helper Name
    * 
    * @return ReflectionClass
    */

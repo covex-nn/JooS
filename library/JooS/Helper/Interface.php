@@ -20,7 +20,7 @@ interface JooS_Helper_Interface
   /**
    * Set subject.
    * 
-   * @param type $subject
+   * @param type $subject Subject
    * 
    * @return JooS_Helper_Interface
    */
