@@ -5,7 +5,7 @@
  */
 
 /**
- * Exception.
+ * Exception. Исключение.
  */
 class JooS_Exception extends Exception
 {
