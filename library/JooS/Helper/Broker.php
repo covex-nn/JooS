@@ -284,7 +284,9 @@ final class JooS_Helper_Broker implements ArrayAccess
       } else {
         require_once "JooS/Helper/Exception.php";
 
-        throw new JooS_Helper_Exception("Helper '$helper' must implement JooS_Helper_Interface");
+        throw new JooS_Helper_Exception(
+          "Helper '$helper' must implement JooS_Helper_Interface"
+        );
       }
     }
     return self::$_loadedHelpers[$helper];

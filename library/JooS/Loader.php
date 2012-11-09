@@ -81,10 +81,10 @@ class JooS_Loader
     require_once "JooS/Config.php";
 
     return implode(
-        DIRECTORY_SEPARATOR, array(
-          JooS_Config::PHPackager()->path(),
-          self::getRelativePath($className, $ext)
-        )
+      DIRECTORY_SEPARATOR, array(
+        JooS_Config::PHPackager()->path(),
+        self::getRelativePath($className, $ext)
+      )
     );
   }
 
