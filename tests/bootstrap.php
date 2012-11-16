@@ -10,7 +10,8 @@
         if (!$fileinfo->isDot() && $fileinfo->isDir())
         {
           $bootstrap = $ext . "/" . $fileinfo->getFilename() . "/tests/bootstrap.php";
-          if (file_exists($bootstrap)) {
+          if (file_exists($bootstrap))
+          {
             include_once($bootstrap);
           }
         }
