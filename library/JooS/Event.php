@@ -159,7 +159,8 @@ abstract class JooS_Event implements JooS_Event_Interface
    * 
    * @return JooS_Event
    */
-  final public static function getInstance() {
+  final public static function getInstance()
+  {
     $className = get_called_class();
     
     if (!isset(self::$_instances[$className])) {
