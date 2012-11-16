@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Jenkins-Jobs">
+<project>
   <property name="CI.basedir" value="${basedir}" />
   
   <property name="CI.dir" value="${CI.basedir}/ci" />

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Contrib">
+<project>
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
     <!-- ant-contrib v1.0b3, http://ant-contrib.sourceforge.net/ -->
 		<classpath>
