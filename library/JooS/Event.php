@@ -155,32 +155,21 @@ abstract class JooS_Event implements JooS_Event_Interface
   }
 
   /**
-   * Returns event instance.
-   * 
-   * @param string $className Event name
+   * Return event instance
    * 
    * @return JooS_Event
    */
-  final protected static function _getInstance($className)
-  {
-    require_once "JooS/Loader.php";
-
+  final public static function getInstance() {
+    $className = get_called_class();
+    
     if (!isset(self::$_instances[$className])) {
-      if (!JooS_Loader::loadClass($className)) {
-        require_once "JooS/Event/Exception.php";
-
-        throw new JooS_Event_Exception("Class $className not found");
-      }
-
-      self::$_instances[$className] = new $className();
+      self::$_instances[$className] = new static();
     }
-
-    self::$_instances[$className]
-      ->initialize();
+    self::$_instances[$className]->initialize();
 
     return self::$_instances[$className];
   }
-
+  
   /**
    * Unloads event instance.
    * 
