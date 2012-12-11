@@ -38,9 +38,9 @@
     public function testModified() {
       $c1 = JooS_Config::Qwerty1();
 
-      $flag1 = $c1->is_modified();
+      $flag1 = $c1->isModified();
       $c1->a = 1;
-      $flag2 = $c1->is_modified();
+      $flag2 = $c1->isModified();
 
       $this->assertTrue(!$flag1);
       $this->assertTrue($flag2);
@@ -48,20 +48,23 @@
     }
 
     public function testExistsClass() {
-      $c1    = JooS_Config::Qwerty1();
+      $c1 = JooS_Config::Qwerty1();
       $c1->c = 1;
 
-      $c2       = JooS_Config::PHPUnit_Testing();
-      $flag3    = $c2->is_modified();
+      $c2 = JooS_Config::newInstance("Qwerty2", array(
+        "a" => array()
+      ));
+      
+      $flag3 = $c2->isModified();
       $c2->a->b = $c1;
-      $flag4    = $c2->is_modified();
+      $flag4 = $c2->isModified();
 
       $this->assertEquals(1, $c2->a->b->c());
       $this->assertTrue(!$flag3);
       $this->assertTrue($flag4);
 
       JooS_Config::clearInstance("Qwerty1");
-      JooS_Config::clearInstance("PHPUnit_Testing");
+      JooS_Config::clearInstance("Qwerty2");
     }
 
     public function testNewInstance() {
@@ -72,7 +75,6 @@
       $c  = JooS_Config::newInstance("Qwerty1", $data);
 
       $this->assertEquals(1, $c->a());
-      $this->assertEquals("JooSX_Config_Qwerty1", $c->get_class());
 
       $checkString = "";
       foreach ($c as $key => $value) {
@@ -109,6 +111,27 @@
       $c->a->b = 2;
     }
 
+    public function testDataAdapter() {
+      require_once "JooS/Config/Adapter/PHPUnit/Testing.php";
+      
+      $dataAdapter = new JooS_Config_Adapter_PHPUnit_Testing(
+        array(
+          "testing1" => array("qwerty" => "asdf"), 
+        )        
+      );
+      
+      JooS_Config::setDataAdapter($dataAdapter);
+      $this->assertEquals($dataAdapter, JooS_Config::getDataAdapter());
+      
+      $config1 = JooS_Config::Testing1();
+      $this->assertEquals("asdf", $config1->qwerty->valueOf());
+      
+      JooS_Config::clearInstance("Testing1");
+      
+      JooS_Config::clearDataAdapter();
+      $this->assertEquals(null, JooS_Config::getDataAdapter());
+    }
+    
   }
 
   

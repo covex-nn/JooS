@@ -3,6 +3,7 @@
 /**
  * @package JooS
  */
+require_once "JooS/Config/Adapter/Interface.php";
 
 /**
  * Configuration.
@@ -10,23 +11,24 @@
 class JooS_Config implements ArrayAccess, Iterator
 {
 
-  const CLASS_PREFIX = "JooSX_Config";
-
-  const ERROR_CANNOT_USE_SCALAR = "Cannot use a scalar value as an array";
-
-  const ERROR_TYPE_MISMATCH = "Type mismatch";
-
   /**
    * @var array
    */
   private $_data;
 
-  private $_className = null;
-
+  /**
+   * @var JooS_Config
+   */
   private $_root = null;
 
-  private $_modified = null;
+  /**
+   * @var boolean
+   */
+  private $_modified = false;
 
+  /**
+   * @var array
+   */
   private static $_instances = array();
 
   /**
@@ -49,53 +51,23 @@ class JooS_Config implements ArrayAccess, Iterator
    */
   public static function getInstance($name)
   {
-    require_once "JooS/Loader.php";
+    $key = self::_instanceKey($name);
+    if (!isset(self::$_instances[$key])) {
 
-    $className = self::getClassName($name);
-    if (!isset(self::$_instances[$className])) {
-      if (JooS_Loader::loadClass($className)) {
-        $config = new $className();
-      } else {
+      $dataSource = self::getDataAdapter();
+      if (is_null($dataSource)) {
         $data = array();
-        $config = new self($data);
+      } else {
+        $data = $dataSource->load($key);
       }
-
+      
+      $config = new self($data);
       /* @var $config JooS_Config */
-      $config->_className = $className;
       $config->_root = $config;
 
-      self::$_instances[$className] = $config;
+      self::$_instances[$key] = $config;
     }
-    return self::$_instances[$className];
-  }
-
-  /**
-   * Unloads config instance.
-   * 
-   * @param string $name Config name
-   * 
-   * @return null
-   */
-  public static function clearInstance($name)
-  {
-    $className = self::getClassName($name);
-    if (isset(self::$_instances[$className])) {
-      unset(self::$_instances[$className]);
-    }
-  }
-
-  /**
-   * Returns className for config instance.
-   * 
-   * @param string $name Config name
-   * 
-   * @return string
-   */
-  public static function getClassName($name)
-  {
-    require_once "JooS/Loader.php";
-
-    return JooS_Loader::getClassName(self::CLASS_PREFIX, $name, true);
+    return self::$_instances[$key];
   }
 
   /**
@@ -117,7 +89,58 @@ class JooS_Config implements ArrayAccess, Iterator
 
     return $config;
   }
+  
+  /**
+   * Unloads config instance.
+   * 
+   * @param string $name Config name
+   * 
+   * @return null
+   */
+  public static function clearInstance($name)
+  {
+    $key = self::_instanceKey($name);
+    
+    if (isset(self::$_instances[$key])) {
+      unset(self::$_instances[$key]);
+    }
+  }
 
+  /**
+   * @var JooS_Config_Adapter_Interface
+   */
+  private static $_dataAdapter = null;
+  
+  /**
+   * Set all-config data source
+   * 
+   * @param JooS_Config_Adapter_Interface $dataAdapter
+   * 
+   * @return null
+   */
+  public static function setDataAdapter(JooS_Config_Adapter_Interface $dataAdapter)
+  {
+    self::$_dataAdapter = $dataAdapter;
+  }
+  
+  /**
+   * Return all-config data source
+   * 
+   * @return JooS_Config_Adapter_Interface
+   */
+  public static function getDataAdapter() {
+    return self::$_dataAdapter;
+  }
+  
+  /**
+   * Clear all-config data source
+   * 
+   * @return null
+   */
+  public static function clearDataAdapter() {
+    self::$_dataAdapter = null;
+  }
+  
   /**
    * Returns config data.
    * 
@@ -129,23 +152,13 @@ class JooS_Config implements ArrayAccess, Iterator
   }
 
   /**
-   * Returns config class.
-   * 
-   * @return string
-   */
-  public function get_class()
-  {
-    return $this->_className;
-  }
-
-  /**
    * Is config modified?
    * 
-   * @return bool
+   * @return boolean
    */
-  public function is_modified()
+  public function isModified()
   {
-    return $this->_root->_modified;
+    return !!$this->_root->_modified;
   }
 
   /**
@@ -178,7 +191,9 @@ class JooS_Config implements ArrayAccess, Iterator
   public function __set($key, $value)
   {
     if (!is_array($this->_data)) {
-      trigger_error(self::ERROR_CANNOT_USE_SCALAR, E_USER_NOTICE);
+      trigger_error(
+        "Cannot use a scalar value as an array", E_USER_NOTICE
+      );
       return;
     }
 
@@ -187,7 +202,9 @@ class JooS_Config implements ArrayAccess, Iterator
     } elseif (is_object($value) && $value instanceof JooS_Config) {
       $newValue = $value->valueOf();
     } else {
-      trigger_error(self::ERROR_TYPE_MISMATCH, E_USER_NOTICE);
+      trigger_error(
+        "Type mismatch", E_USER_NOTICE
+      );
       return;
     }
 
@@ -362,5 +379,17 @@ class JooS_Config implements ArrayAccess, Iterator
     return is_null($key) ? false : isset($this->_data[$key]);
   }
 
+  /**
+   * Returns className for config instance.
+   * 
+   * @param string $name Config name
+   * 
+   * @return string
+   */
+  private static function _instanceKey($name)
+  {
+    return strtolower($name);
+  }
+  
 }
 
