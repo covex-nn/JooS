@@ -114,7 +114,7 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Set all-config data source
    * 
-   * @param JooS_Config_Adapter_Interface $dataAdapter
+   * @param JooS_Config_Adapter_Interface $dataAdapter Data source
    * 
    * @return null
    */
@@ -128,7 +128,8 @@ class JooS_Config implements ArrayAccess, Iterator
    * 
    * @return JooS_Config_Adapter_Interface
    */
-  public static function getDataAdapter() {
+  public static function getDataAdapter()
+  {
     return self::$_dataAdapter;
   }
   
@@ -137,7 +138,8 @@ class JooS_Config implements ArrayAccess, Iterator
    * 
    * @return null
    */
-  public static function clearDataAdapter() {
+  public static function clearDataAdapter()
+  {
     self::$_dataAdapter = null;
   }
   

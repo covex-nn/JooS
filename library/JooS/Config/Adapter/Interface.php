@@ -7,7 +7,8 @@
 /**
  * Interface for config data source adapter
  */
-interface JooS_Config_Adapter_Interface {
+interface JooS_Config_Adapter_Interface
+{
   /**
    * Load config data
    * 
