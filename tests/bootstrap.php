@@ -1,5 +1,9 @@
 <?php
 
+  if (ini_get("xdebug.max_nesting_level")) {
+    ini_set("xdebug.max_nesting_level", 1024);
+  }
+
   $sub_include_path = function() {
     $ext = dirname(__DIR__) . "/external";
     if (file_exists($ext) && is_dir($ext))
