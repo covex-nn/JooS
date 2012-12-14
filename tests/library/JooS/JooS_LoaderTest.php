@@ -1,38 +1,31 @@
 <?php
 
-  require_once "JooS/Loader.php";
+require_once "JooS/Loader.php";
 
-  require_once "JooS/Config.php";
+require_once "JooS/Config.php";
 
-  /**
-   * Test class for JooS_Loader.
-   */
-  class JooS_LoaderTest extends PHPUnit_Framework_TestCase {
+/**
+ * Test class for JooS_Loader.
+ */
+class JooS_LoaderTest extends PHPUnit_Framework_TestCase
+{
 
-    public function testLoadClass() {
-      $exists1 = JooS_Loader::loadClass("JooS_Exception");
-      $this->assertTrue($exists1);
-      
-      $exists2 = JooS_Loader::loadClass("JooS_Loader");
-      $this->assertTrue($exists2);
-    }
+  public function testLoadClass()
+  {
+    $exists1 = JooS_Loader::loadClass("JooS_Exception");
+    $this->assertTrue($exists1);
 
-    public function testPaths() {
-      $libraryPath = JooS_Config::PHPackager_Library()->path();
-      $rootPath    = JooS_Config::PHPackager()->path();
+    $exists2 = JooS_Loader::loadClass("JooS_Exception_Class_Not_Exists");
+    $this->assertFalse($exists2);
 
-      $this->assertEquals(implode(DIRECTORY_SEPARATOR, array(
-          $rootPath,
-          $libraryPath ? $libraryPath : "library",
-          "Qwerty1",
-          "Qwerty2.php",
-        )), JooS_Loader::getRealPath("Qwerty1_Qwerty2"));
-    }
+    $exists3 = JooS_Loader::loadClass("JooS_Loader");
+    $this->assertTrue($exists3);
+  }
+  
+  public function testGetClassName() {
+    $this->assertEquals("qqq_Class1", JooS_Loader::getClassName("qqq", "Class1"));
     
-    protected function tearDown() {
-      JooS_Config::clearInstance("PHPackager_Library");
-      JooS_Config::clearInstance("PHPackager");
-    }
+    $this->assertEquals("qqq_Class1_Class2", JooS_Loader::getClassName("qqq", "claSS1_class2", true));
   }
 
-  
+}

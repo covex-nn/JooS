@@ -52,43 +52,6 @@ class JooS_Loader
   }
 
   /**
-   * Returns relative path to class.
-   * 
-   * @param string $className Class Name
-   * @param string $ext       Extention
-   * 
-   * @return string
-   */
-  public static function getRelativePath($className, $ext = "php")
-  {
-    require_once "JooS/Config.php";
-
-    $library = JooS_Config::PHPackager_Library()->path() ? : "library";
-
-    return $library . DIRECTORY_SEPARATOR . self::getPath($className, $ext);
-  }
-
-  /**
-   * Returns real path.
-   * 
-   * @param string $className Class Name
-   * @param string $ext       Extention
-   * 
-   * @return string
-   */
-  public static function getRealPath($className, $ext = "php")
-  {
-    require_once "JooS/Config.php";
-
-    return implode(
-      DIRECTORY_SEPARATOR, array(
-        JooS_Config::PHPackager()->path(),
-        self::getRelativePath($className, $ext)
-      )
-    );
-  }
-
-  /**
    * Returns className.
    * 
    * @param string $prefix  Prefix
