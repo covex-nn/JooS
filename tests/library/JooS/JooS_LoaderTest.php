@@ -21,10 +21,11 @@ class JooS_LoaderTest extends PHPUnit_Framework_TestCase
     $exists3 = JooS_Loader::loadClass("JooS_Loader");
     $this->assertTrue($exists3);
   }
-  
-  public function testGetClassName() {
+
+  public function testGetClassName()
+  {
     $this->assertEquals("qqq_Class1", JooS_Loader::getClassName("qqq", "Class1"));
-    
+
     $this->assertEquals("qqq_Class1_Class2", JooS_Loader::getClassName("qqq", "claSS1_class2", true));
   }
 

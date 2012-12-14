@@ -88,6 +88,29 @@ class JooS_Options extends JooS_Helper_Abstract {
   }
   
   /**
+   * Load options from filename.json
+   * 
+   * @param string $filename Path to config file
+   * 
+   * @return boolean
+   */
+  public function loadJson($filename)
+  {
+    $result = false;
+    if (file_exists($filename) && is_file($filename)) {
+      $json = file_get_contents($filename);
+      $data = json_decode($json, true);
+      if (is_array($data)) {
+        foreach ($data as $name => $value) {
+          $this->__set($name, $value);
+        }
+        $result = true;
+      }
+    }
+    return $result;
+  }
+  
+  /**
    * Return default value
    * 
    * @param string $name Property name

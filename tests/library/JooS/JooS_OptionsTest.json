@@ -1,0 +1,7 @@
+{
+  "param1" : 1, 
+  "param2" : [ 1, "a" ], 
+  "param3" : {
+    "a" : false
+  }
+}
