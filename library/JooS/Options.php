@@ -8,7 +8,8 @@ require_once "JooS/Helper/Abstract.php";
 /**
  * Options helper
  */
-class JooS_Options extends JooS_Helper_Abstract {
+class JooS_Options extends JooS_Helper_Abstract
+{
   /**
    * @var array
    */
@@ -21,8 +22,6 @@ class JooS_Options extends JooS_Helper_Abstract {
   
   /**
    * Constructor
-   * 
-   * @param type $default
    */
   public function __construct()
   {
@@ -54,7 +53,8 @@ class JooS_Options extends JooS_Helper_Abstract {
    * 
    * @return mixed
    */
-  public function __isset($name) {
+  public function __isset($name)
+  {
     if (isset($this->_data[$name])) {
       $isset = true;
     } else {
@@ -70,7 +70,8 @@ class JooS_Options extends JooS_Helper_Abstract {
    * 
    * @return null
    */
-  public function __unset($name) {
+  public function __unset($name)
+  {
     unset($this->_data[$name]);
   }
   
@@ -117,7 +118,8 @@ class JooS_Options extends JooS_Helper_Abstract {
    * 
    * @return mixed
    */
-  protected function getDefault($name) {
+  protected function getDefault($name)
+  {
     if (is_null($this->_defaultData)) {
       $subject = $this->getSubject();
       if (!is_null($subject) && $subject instanceof JooS_Options_Subject) {

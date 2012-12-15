@@ -7,7 +7,8 @@
 /**
  * Options helper-subject's interface
  */
-interface JooS_Options_Subject {
+interface JooS_Options_Subject
+{
   
   /**
    * Return options object
