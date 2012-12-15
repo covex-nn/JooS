@@ -6,7 +6,8 @@ require_once "JooS/Helper/Subject.php";
 
 require_once "JooS/Options/Subject.php";
 
-class JooS_OptionsTest extends PHPUnit_Framework_TestCase implements JooS_Helper_Subject, JooS_Options_Subject
+class JooS_OptionsTest extends PHPUnit_Framework_TestCase
+  implements JooS_Helper_Subject, JooS_Options_Subject
 {
 
   public function testInstance()
@@ -40,18 +41,18 @@ class JooS_OptionsTest extends PHPUnit_Framework_TestCase implements JooS_Helper
   public function testLoadJson()
   {
     $options = new JooS_Options();
-    
+
     $load1 = $options->loadJson(__DIR__ . "/JooS_OptionsTest.json");
-    
+
     $this->assertTrue($load1);
     $this->assertEquals(1, $options->param1);
     $this->assertEquals(array(1, "a"), $options->param2);
     $this->assertEquals(array("a" => false), $options->param3);
-    
+
     $load2 = $options->loadJson(__FILE__);
     $this->assertFalse($load2);
   }
-  
+
   private $_helperBroker = null;
 
   public function helperBroker()
@@ -69,6 +70,15 @@ class JooS_OptionsTest extends PHPUnit_Framework_TestCase implements JooS_Helper
     return array(
       "qwerty" => 1,
     );
+  }
+  
+  /**
+   * @return JooS_Options
+   */
+  public function getOptions() {
+    $helperBroker = $this->helperBroker();
+    
+    return $helperBroker->Options;
   }
 
 }
