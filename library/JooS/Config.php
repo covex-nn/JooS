@@ -105,6 +105,28 @@ class JooS_Config implements ArrayAccess, Iterator
       unset(self::$_instances[$key]);
     }
   }
+  
+  /**
+   * Save config instance data
+   * 
+   * @param string $name
+   * 
+   * @return boolean
+   */
+  public static function saveInstance($name)
+  {
+    $adapter = self::getDataAdapter();
+    if (!is_null($adapter)) {
+      $config = self::getInstance($name);
+      $key = self::_instanceKey($name);
+      
+      $result = $adapter->save($key, $config);
+    } else {
+      $result = false;
+    }
+    
+    return $result;
+  }
 
   /**
    * @var JooS_Config_Adapter_Interface
