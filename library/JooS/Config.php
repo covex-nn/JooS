@@ -109,7 +109,7 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Save config instance data
    * 
-   * @param string $name
+   * @param string $name Config name
    * 
    * @return boolean
    */
