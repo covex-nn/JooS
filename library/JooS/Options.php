@@ -112,6 +112,30 @@ class JooS_Options extends JooS_Helper_Abstract
   }
   
   /**
+   * Load options from CLI $argv array
+   * 
+   * @param array $argv CLI arguments
+   * 
+   * @return null
+   */
+  public function loadCommandLine(array $argv)
+  {
+    for ($i=0; $i<sizeof($argv); $i++) {
+      $arg = $argv[$i];
+      
+      if (substr($arg, 0, 2) == "--") {
+        $arg = substr($arg, 2);
+        
+        $parts = explode("=", $arg);
+        $name = array_shift($parts);
+        $value = implode("=", $parts);
+        
+        $this->{$name} = $value;
+      }
+    }
+  }
+  
+  /**
    * Return default value
    * 
    * @param string $name Property name
