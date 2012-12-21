@@ -3,23 +3,20 @@
 /**
  * @package JooS
  */
+require_once "JooS/Object.php";
+
 require_once "JooS/Event/Interface.php";
 
 /**
  * Event.
  */
-abstract class JooS_Event implements JooS_Event_Interface
+abstract class JooS_Event extends JooS_Object implements JooS_Event_Interface
 {
 
   /**
    * @var array
    */
   private $_observers;
-
-  /**
-   * @var array
-   */
-  private $_notifyData;
 
   /**
    * @var array
@@ -61,98 +58,13 @@ abstract class JooS_Event implements JooS_Event_Interface
   }
 
   /**
-   * Is event notify data exists ?
-   * 
-   * @param string $name Key
-   * 
-   * @return bool
-   */
-  public function __isset($name)
-  {
-    $name = $this->_normalizeName($name);
-    return isset($this->_notifyData[$name]);
-  }
-
-  /**
-   * Returns notify data item.
-   * 
-   * @param string $name Key
-   * 
-   * @return mixed
-   */
-  public function __get($name)
-  {
-    $name = $this->_normalizeName($name);
-
-    if (isset($this->_notifyData[$name])) {
-      $value = $this->_notifyData[$name];
-    } else {
-      $value = null;
-    }
-
-    return $value;
-  }
-
-  /**
-   * Sets notify data item.
-   * 
-   * @param string $name  Key
-   * @param mixed  $value Value
-   * 
-   * @return null
-   */
-  public function __set($name, $value)
-  {
-    $name = $this->_normalizeName($name);
-    $this->_notifyData[$name] = $value;
-  }
-
-  /**
-   * Unsets notify data item.
-   * 
-   * @param string $name Key
-   * 
-   * @return null
-   */
-  public function __unset($name)
-  {
-    $name = $this->_normalizeName($name);
-    if (isset($this->_notifyData[$name])) {
-      unset($this->_notifyData[$name]);
-    }
-  }
-
-  /**
-   * Sets notify data. Name of the function must begin width 'set'
-   * 
-   * @param string $name      Magic-function name
-   * @param mixed  $arguments Arguments
-   * 
-   * @return JooS_Event
-   */
-  final public function __call($name, $arguments)
-  {
-    if (substr($name, 0, 3) === "set" && sizeof($arguments) == 1) {
-      $name = substr($name, 3);
-      $value = $arguments[0];
-
-      if (is_null($value)) {
-        $this->__unset($name);
-      } else {
-        $this->__set($name, $value);
-      }
-    }
-    return $this;
-  }
-
-  /**
    * Event Initialize.
    * 
    * @return null
    */
   protected function initialize()
   {
-    $this->_notifyData = array();
+    
   }
 
   /**
@@ -285,18 +197,6 @@ abstract class JooS_Event implements JooS_Event_Interface
   final public function observers()
   {
     return $this->_observers;
-  }
-
-  /**
-   * Normalize name.
-   * 
-   * @param string $name Name
-   * 
-   * @return string
-   */
-  private function _normalizeName($name)
-  {
-    return strtolower($name);
   }
 
 }
