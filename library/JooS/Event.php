@@ -56,6 +56,7 @@ abstract class JooS_Event implements JooS_Event_Interface
   final public function __clone()
   {
     require_once "JooS/Event/Exception.php";
+    
     throw new JooS_Event_Exception("Event object is singleton");
   }
 
