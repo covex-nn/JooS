@@ -107,6 +107,19 @@ class JooS_Config implements ArrayAccess, Iterator
   }
   
   /**
+   * Upload all configs data
+   * 
+   * @return null
+   */
+  public static function clearAll()
+  {
+    $names = array_keys(self::$_instances);
+    foreach ($names as $name) {
+      self::clearInstance($name);
+    }
+  }
+  
+  /**
    * Save config instance data
    * 
    * @param string $name Config name

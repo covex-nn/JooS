@@ -123,9 +123,9 @@ class JooS_ConfigTest extends PHPUnit_Framework_TestCase
     require_once "JooS/Config/Adapter/PHPUnit/Testing.php";
 
     $dataAdapter = new JooS_Config_Adapter_PHPUnit_Testing(
-      array(
-        "testing1" => array("qwerty" => "asdf"),
-      )
+        array(
+          "testing1" => array("qwerty" => "asdf"),
+        )
     );
 
     JooS_Config::setDataAdapter($dataAdapter);
@@ -133,17 +133,33 @@ class JooS_ConfigTest extends PHPUnit_Framework_TestCase
 
     $config1 = JooS_Config::Testing1();
     $this->assertEquals("asdf", $config1->qwerty->valueOf());
-    
+
     $config1->qwerty = "zxcv";
     JooS_Config::saveInstance("Testing1");
     JooS_Config::clearInstance("Testing1");
-    
+
     $config2 = JooS_Config::Testing1();
     $this->assertEquals(array("qwerty" => "zxcv"), $config2->valueOf());
 
     JooS_Config::clearInstance("Testing1");
     JooS_Config::clearDataAdapter();
     $this->assertEquals(null, JooS_Config::getDataAdapter());
+  }
+  
+  public function testClearAll()
+  {
+    $c1 = JooS_Config::getInstance("test");
+    $c1->value = 1;
+    
+    JooS_Config::clearAll();
+    
+    $c2 = JooS_Config::getInstance("test");
+    $this->assertFalse(isset($c2->value));
+    
+    JooS_Config::clearDataAdapter();
+    
+    $save1 = JooS_Config::saveInstance("test");
+    $this->assertFalse($save1);
   }
 
 }
