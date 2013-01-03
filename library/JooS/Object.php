@@ -96,7 +96,7 @@ class JooS_Object
   /**
    * Magic method __unset
    * 
-   * @param string $name
+   * @param string $name Name
    * 
    * @return null
    */
