@@ -84,10 +84,7 @@
   
   <!-- Generate API documentation using phpDox -->
   <target name="CI-phpdox">
-    <exec executable="${CI.phpdox}" dir="${CI.dir}">
-      <arg value="--file" />
-      <arg value="../phpdox" />
-    </exec>
+    <exec executable="${CI.phpdox}" dir="${CI.basedir}" />
   </target>
   
   <!-- Generate phploc.csv -->
