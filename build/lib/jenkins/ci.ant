@@ -84,10 +84,8 @@
   <!-- Generate API documentation using PHPDocumentor -->
   <target name="CI-phpdoc">
     <exec executable="${CI.phpdoc}" dir="${CI.dir}">
-      <arg value="--templatebase" />
-      <arg value="${lib.path.jenkins}/phpdoc" />
       <arg value="--output" />
-      <arg value="HTML:frames:utf8" />
+      <arg value="HTML:frames:default" />
       <arg value="--directory" />
       <arg value="${CI.source}" />
       <arg value="--target" />
