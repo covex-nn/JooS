@@ -27,4 +27,13 @@ interface JooS_Config_Adapter_Interface
    * @return boolean
    */
   public function save($name, JooS_Config $config);
+  
+  /**
+   * Delete config data
+   * 
+   * @param string $name Config name
+   * 
+   * @return boolean
+   */
+  public function delete($name);
 }

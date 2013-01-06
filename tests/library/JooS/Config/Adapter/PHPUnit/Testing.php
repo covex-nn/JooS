@@ -31,5 +31,10 @@ class JooS_Config_Adapter_PHPUnit_Testing implements JooS_Config_Adapter_Interfa
 
     return true;
   }
+  
+  public function delete($name)
+  {
+    unset($this->_data[$name]);
+  }
 
 }

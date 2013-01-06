@@ -140,6 +140,28 @@ class JooS_Config implements ArrayAccess, Iterator
     
     return $result;
   }
+  
+  /**
+   * Delete config instance data
+   * 
+   * @param string $name Config name
+   * 
+   * @return boolean
+   */
+  public static function deleteInstance($name)
+  {
+    $adapter = self::getDataAdapter();
+    if (!is_null($adapter)) {
+      $key = self::_instanceKey($name);
+      
+      $result = $adapter->delete($key);
+    } else {
+      $result = false;
+    }
+    self::clearInstance($name);
+    
+    return $result;
+  }
 
   /**
    * @var JooS_Config_Adapter_Interface
