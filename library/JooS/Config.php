@@ -20,11 +20,11 @@ class JooS_Config implements ArrayAccess, Iterator
    * @var JooS_Config
    */
   private $_root = null;
-
+  
   /**
-   * @var boolean
+   * @var string
    */
-  private $_modified = false;
+  private $_key = null;
 
   /**
    * @var array
@@ -32,11 +32,11 @@ class JooS_Config implements ArrayAccess, Iterator
   private static $_instances = array();
 
   /**
-   * Protected constructor.
+   * Private constructor.
    * 
    * @param array &$data Config Data
    */
-  protected function __construct(&$data)
+  private function __construct(&$data)
   {
     $this->_data = &$data;
     reset($this);
@@ -64,6 +64,7 @@ class JooS_Config implements ArrayAccess, Iterator
       $config = new self($data);
       /* @var $config JooS_Config */
       $config->_root = $config;
+      $config->_key = $key;
 
       self::$_instances[$key] = $config;
     }
@@ -209,17 +210,19 @@ class JooS_Config implements ArrayAccess, Iterator
   {
     return $this->_data;
   }
-
+  
   /**
-   * Is config modified?
+   * Save config instance data
    * 
    * @return boolean
    */
-  public function isModified()
+  public function save()
   {
-    return !!$this->_root->_modified;
+    $key = $this->_root->_key;
+    
+    return self::saveInstance($key);
   }
-
+  
   /**
    * Get value.
    * 
@@ -268,7 +271,6 @@ class JooS_Config implements ArrayAccess, Iterator
     }
 
     $this->_data[$key] = $newValue;
-    $this->_root->_modified = true;
   }
 
   /**
@@ -294,7 +296,6 @@ class JooS_Config implements ArrayAccess, Iterator
   {
     if ($this->__isset($key)) {
       unset($this->_data[$key]);
-      $this->_root->_modified = true;
     }
   }
 
@@ -304,8 +305,8 @@ class JooS_Config implements ArrayAccess, Iterator
    * @param string $name      Key
    * @param array  $arguments Argiments (not used)
    * 
-   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    * @return mixed
+   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    */
   public function __call($name, $arguments)
   {
@@ -329,8 +330,8 @@ class JooS_Config implements ArrayAccess, Iterator
    * @param string $name      Config name
    * @param array  $arguments Arguments (not used)
    * 
-   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    * @return JooS_Config
+   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    */
   public static function __callStatic($name, $arguments)
   {

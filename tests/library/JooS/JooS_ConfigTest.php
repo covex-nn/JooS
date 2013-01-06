@@ -37,19 +37,6 @@ class JooS_ConfigTest extends PHPUnit_Framework_TestCase
     JooS_Config::clearInstance("Qqq_Sss");
   }
 
-  public function testModified()
-  {
-    $c1 = JooS_Config::Qwerty1();
-
-    $flag1 = $c1->isModified();
-    $c1->a = 1;
-    $flag2 = $c1->isModified();
-
-    $this->assertTrue(!$flag1);
-    $this->assertTrue($flag2);
-    JooS_Config::clearInstance("Qwerty1");
-  }
-
   public function testExistsClass()
   {
     $c1 = JooS_Config::Qwerty1();
@@ -59,13 +46,9 @@ class JooS_ConfigTest extends PHPUnit_Framework_TestCase
         "a" => array()
       ));
 
-    $flag3 = $c2->isModified();
     $c2->a->b = $c1;
-    $flag4 = $c2->isModified();
 
     $this->assertEquals(1, $c2->a->b->c());
-    $this->assertTrue(!$flag3);
-    $this->assertTrue($flag4);
 
     JooS_Config::clearInstance("Qwerty1");
     JooS_Config::clearInstance("Qwerty2");
@@ -145,19 +128,19 @@ class JooS_ConfigTest extends PHPUnit_Framework_TestCase
     JooS_Config::clearDataAdapter();
     $this->assertEquals(null, JooS_Config::getDataAdapter());
   }
-  
+
   public function testClearAll()
   {
     $c1 = JooS_Config::getInstance("test");
     $c1->value = 1;
-    
+
     JooS_Config::clearAll();
-    
+
     $c2 = JooS_Config::getInstance("test");
     $this->assertFalse(isset($c2->value));
-    
+
     JooS_Config::clearDataAdapter();
-    
+
     $save1 = JooS_Config::saveInstance("test");
     $this->assertFalse($save1);
   }
