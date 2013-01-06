@@ -9,12 +9,24 @@
     extension::json
   ]]></depends>
   
+  <add>
+    <?install
+      attach(
+        event("JooS_Event_Log"), array("JooS_Log", "observer")
+      );
+    ?>
+  </add>
+  
+  <delete>
+    <?remove
+      detach(
+        event("JooS_Event_Log"), array("JooS_Log", "observer")
+      );
+    ?>
+  </delete>
+  
   <!--
     #Phpackager_Library/path = 'library';
-    
-    event('JooS_Event_Config_Commit')
-      ->setName('Phpackager_Library')
-      ->notify();
   -->
 </package>
 </control>
