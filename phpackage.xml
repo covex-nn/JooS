@@ -11,17 +11,13 @@
   
   <add>
     <?install
-      attach(
-        event("JooS_Event_Log"), array("JooS_Log", "observer")
-      );
+      attach("JooS_Event_Log", array("JooS_Log", "observer"));
     ?>
   </add>
   
   <delete>
     <?remove
-      detach(
-        event("JooS_Event_Log"), array("JooS_Log", "observer")
-      );
+      detach("JooS_Event_Log", array("JooS_Log", "observer"));
     ?>
   </delete>
   
