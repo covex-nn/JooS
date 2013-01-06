@@ -282,7 +282,7 @@ class JooS_Config implements ArrayAccess, Iterator
    * @param string $name      Key
    * @param array  $arguments Argiments (not used)
    * 
-   * @SuppressWarnings(PHPMD.UnusedFormatParameter)
+   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    * @return mixed
    */
   public function __call($name, $arguments)
@@ -307,7 +307,7 @@ class JooS_Config implements ArrayAccess, Iterator
    * @param string $name      Config name
    * @param array  $arguments Arguments (not used)
    * 
-   * @SuppressWarnings(PHPMD.UnusedFormatParameter)
+   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    * @return JooS_Config
    */
   public static function __callStatic($name, $arguments)

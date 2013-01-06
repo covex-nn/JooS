@@ -84,7 +84,7 @@ final class JooS_Helper_Broker implements ArrayAccess
    * @param string $helper    Name
    * @param array  $arguments Not used
    * 
-   * @SuppressWarnings(PHPMD.UnusedFormatParameter)
+   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    * @return ReflectionClass
    */
   public function __call($helper, $arguments)
@@ -135,7 +135,7 @@ final class JooS_Helper_Broker implements ArrayAccess
    * @param string $name  Name
    * @param mixed  $value Value
    * 
-   * @SuppressWarnings(PHPMD.UnusedFormatParameter)
+   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    * @throws JooS_Helper_Exception
    * @return null
    */
@@ -151,7 +151,7 @@ final class JooS_Helper_Broker implements ArrayAccess
    * 
    * @param string $name Name
    * 
-   * @SuppressWarnings(PHPMD.UnusedFormatParameter)
+   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    * @throws JooS_Helper_Exception
    * @return null
    */
@@ -192,7 +192,7 @@ final class JooS_Helper_Broker implements ArrayAccess
    * @param string $offset Name
    * @param mixed  $value  Value
    * 
-   * @SuppressWarnings(PHPMD.UnusedFormatParameter)
+   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    * @throws JooS_Helper_Exception
    * @return null
    */
@@ -208,7 +208,7 @@ final class JooS_Helper_Broker implements ArrayAccess
    * 
    * @param type $offset Name
    * 
-   * @SuppressWarnings(PHPMD.UnusedFormatParameter)
+   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    * @throws JooS_Helper_Exception
    * @return null
    */
