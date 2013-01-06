@@ -32,23 +32,10 @@ abstract class JooS_Event extends JooS_Object implements JooS_Event_Interface
   }
 
   /**
-   * Load observers.
-   * 
-   * @return null
-   */
-  private function _loadObservers()
-  {
-    require_once "JooS/Config.php";
-
-    $valueOf = JooS_Config::getInstance($this->name())->valueOf();
-    $this->_observers = $valueOf ? : array();
-  }
-
-  /**
    * Cloning not allowed.
    * 
-   * @throws JooS_Event_Exception
    * @return null
+   * @throws JooS_Event_Exception
    */
   final public function __clone()
   {
@@ -108,8 +95,8 @@ abstract class JooS_Event extends JooS_Object implements JooS_Event_Interface
    * @param string $message Exception message
    * @param int    $code    Exception code
    * 
-   * @throws JooS_Event_Exception
    * @return null
+   * @throws JooS_Event_Exception
    */
   public function cancel($message = null, $code = null)
   {
@@ -178,7 +165,7 @@ abstract class JooS_Event extends JooS_Object implements JooS_Event_Interface
     }
     return $this;
   }
-
+  
   /**
    * Return event's name.
    * 
@@ -188,7 +175,7 @@ abstract class JooS_Event extends JooS_Object implements JooS_Event_Interface
   {
     return get_class($this);
   }
-
+  
   /**
    * Return list of observers.
    * 
@@ -198,6 +185,35 @@ abstract class JooS_Event extends JooS_Object implements JooS_Event_Interface
   {
     return $this->_observers;
   }
+  
+  /**
+   * Save observers
+   * 
+   * @return boolean
+   */
+  final public function save()
+  {
+    $name = $this->name();
+    $observers = $this->observers();
+    
+    $config = JooS_Config::newInstance($name, $observers);
+    
+    return $config->save();
+  }
 
+  /**
+   * Load observers.
+   * 
+   * @return null
+   */
+  private function _loadObservers()
+  {
+    require_once "JooS/Config.php";
+
+    $name = $this->name();
+    $config = JooS_Config::getInstance($name);
+    
+    $this->_observers = $config->valueOf();
+  }
+  
 }
-

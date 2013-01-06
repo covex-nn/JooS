@@ -88,5 +88,36 @@ class JooS_EventTest extends PHPUnit_Framework_TestCase
     $event = clone JooS_Event_PHPUnit_Testing::getInstance();
   }
 
+  public function testSave()
+  {
+    $event1 = JooS_Event_PHPUnit_Testing::getInstance();
+    
+    $config1 = JooS_Config::getInstance("JooS_Event_PHPUnit_Testing");
+    $this->assertEquals(array(), $config1->valueOf());
+    
+    $event1->attach(
+      array(__CLASS__, "observerPHPUnitTestingEvent")
+    );
+    
+    $config2 = JooS_Config::getInstance("JooS_Event_PHPUnit_Testing");
+    $this->assertEquals(array(), $config2->valueOf());
+    
+    $event1->save();
+    
+    $config3 = JooS_Config::getInstance("JooS_Event_PHPUnit_Testing");
+    $this->assertEquals(
+      array(
+        array(__CLASS__, "observerPHPUnitTestingEvent")
+      ),
+      $config3->valueOf()
+    );
+    
+    JooS_Event::clearInstance("JooS_Event_PHPUnit_Testing");
+  }
+  
+  public static function observerPHPUnitTestingEvent(JooS_Event_PHPUnit_Testing $event)
+  {
+    
+  }
 }
 
