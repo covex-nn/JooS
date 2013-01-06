@@ -103,6 +103,9 @@ class JooS_ConfigTest extends PHPUnit_Framework_TestCase
 
   public function testDataAdapter()
   {
+    $delete1 = JooS_Config::deleteInstance("Testing1");
+    $this->assertFalse($delete1);
+    
     require_once "JooS/Config/Adapter/PHPUnit/Testing.php";
 
     $dataAdapter = new JooS_Config_Adapter_PHPUnit_Testing(
@@ -123,7 +126,19 @@ class JooS_ConfigTest extends PHPUnit_Framework_TestCase
 
     $config2 = JooS_Config::Testing1();
     $this->assertEquals(array("qwerty" => "zxcv"), $config2->valueOf());
+    
+    $config2->qwerty = "qqq";
+    $config2->save();
+    JooS_Config::clearInstance("Testing1");
 
+    $config3 = JooS_Config::Testing1();
+    $this->assertEquals(array("qwerty" => "qqq"), $config3->valueOf());
+    
+    JooS_Config::deleteInstance("Testing1");
+
+    $config4 = JooS_Config::Testing1();
+    $this->assertEquals(array(), $config4->valueOf());
+    
     JooS_Config::clearInstance("Testing1");
     JooS_Config::clearDataAdapter();
     $this->assertEquals(null, JooS_Config::getDataAdapter());
