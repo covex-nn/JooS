@@ -2,6 +2,7 @@
 
 /**
  * @package JooS
+ * @subpackage Log
  */
 require_once "JooS/Event.php";
 

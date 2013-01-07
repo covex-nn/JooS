@@ -5,7 +5,7 @@
  */
 
 /**
- * Namespace from CityDNK for #value/value .
+ * Namespace from CityDNK's template-engine for #value/value.
  */
 final class JooS_Namespace
 {

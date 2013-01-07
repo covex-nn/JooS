@@ -2,6 +2,7 @@
 
 /**
  * @package JooS
+ * @subpackage Config
  */
 require_once "JooS/Config/Adapter/Interface.php";
 

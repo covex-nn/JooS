@@ -2,6 +2,7 @@
 
 /**
  * @package JooS
+ * @subpackage Helper
  */
 require_once "JooS/Exception.php";
 

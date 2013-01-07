@@ -10,13 +10,24 @@
   ]]></depends>
   
   <add>
-    <?install
+    <?pre-install
       attach("JooS_Event_Log", array("JooS_Log", "observer"));
+      $logWriters = array(
+        "output"
+      );
+    ?>
+    
+    <?post-install
+      #JooS_Log/writers = $logWriters;
+    ?>
+    <?post-upgrade
+      #JooS_Log/writers = $logWriters;
     ?>
   </add>
   
   <delete>
-    <?remove
+    <?post-remove
+      #JooS_Log/writers = array();
       detach("JooS_Event_Log", array("JooS_Log", "observer"));
     ?>
   </delete>
