@@ -14,7 +14,7 @@ class JooS_Log
   /**
    * Event observer
    * 
-   * @param JooS_Event_Log $event
+   * @param JooS_Event_Log $event Event
    * 
    * @return boolean
    */
@@ -48,8 +48,7 @@ class JooS_Log
       $writers = JooS_Config::getInstance("JooS_Log")->writers;
       /* @var $writers JooS_Config */
       
-      foreach ($writers->valueOf() as $name)
-      {
+      foreach ($writers->valueOf() as $name) {
         $className = JooS_Loader::getClassName(__CLASS__, $name, true);
         if (JooS_Loader::loadClass($className)) {
           $writer = new $className();
@@ -65,7 +64,7 @@ class JooS_Log
   /**
    * Add new writer
    * 
-   * @param JooS_Log_Interface $writer
+   * @param JooS_Log_Interface $writer Log writer
    * 
    * @return boolean
    */
