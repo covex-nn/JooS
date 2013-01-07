@@ -122,6 +122,8 @@ abstract class JooS_Event extends JooS_Object implements JooS_Event_Interface
         case is_string($observer[0]):
           break;
         default:
+          require_once "JooS/Loader.php";
+          
           JooS_Loader::loadClass($observer[0]);
           break;
       }
