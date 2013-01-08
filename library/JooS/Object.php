@@ -52,7 +52,7 @@ class JooS_Object
    * @param string $name      Method name
    * @param array  $arguments Arguments
    * 
-   * @return null
+   * @return JooS_Object
    */
   public function __call($name, $arguments)
   {
@@ -66,6 +66,8 @@ class JooS_Object
       }
 
       $this->__set($name, $value);
+      
+      return $this;
     }
   }
   

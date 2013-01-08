@@ -11,7 +11,7 @@ require_once "JooS/Event.php";
  * 
  * @property string $message Data
  * 
- * @method null setMessage(string $value) Set message
+ * @method JooS_Event_Log setMessage(string $value) Set message
  * @method JooS_Event_Log getInstance() Return event instance
  */
 class JooS_Event_Log extends JooS_Event
