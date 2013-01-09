@@ -47,15 +47,18 @@ class JooS_Log
       
       $writers = JooS_Config::getInstance("JooS_Log")->writers;
       /* @var $writers JooS_Config */
-      
-      foreach ($writers->valueOf() as $name) {
-        $className = JooS_Loader::getClassName(__CLASS__, $name, true);
-        if (JooS_Loader::loadClass($className)) {
-          $writer = new $className();
-          if ($writer instanceof JooS_Log_Interface) {
-            self::addWriter($writer);
+      if (!is_null($writers)) {
+        foreach ($writers->valueOf() as $name) {
+          $className = JooS_Loader::getClassName(__CLASS__, $name, true);
+          if (JooS_Loader::loadClass($className)) {
+            $writer = new $className();
+            if ($writer instanceof JooS_Log_Interface) {
+              self::addWriter($writer);
+            }
           }
         }
+      } else {
+        self::$_writers = array();
       }
     }
     return self::$_writers;
