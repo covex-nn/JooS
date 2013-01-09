@@ -2,7 +2,7 @@
 <control>
 <package name="JooS" version="2.0.0.0">
   <source><![CDATA[
-    "library"
+    "library", "bootstrap.php"
   ]]></source>
   
   <depends><![CDATA[
@@ -20,6 +20,7 @@
     <?post-install
       #JooS_Log/writers = $/logWriters;
     ?>
+    
     <?post-upgrade
       #JooS_Log/writers = $/logWriters;
     ?>
@@ -31,9 +32,5 @@
       detach("JooS_Event_Log", array("JooS_Log", "observer"));
     ?>
   </delete>
-  
-  <!--
-    #Phpackager_Library/path = 'library';
-  -->
 </package>
 </control>
