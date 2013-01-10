@@ -5,9 +5,11 @@
   
   <import file="${lib.path.contrib}/contrib.ant" />
   <import file="${lib.path.jenkins}/ci.ant" />
+  <import file="${lib.path.git}/git.ant" />
+  <import file="${lib.path.required}/required.ant" />
   <import file="${lib.path.package}/package.ant" />
   
-  <target name="init" unless="required.JooS.loaded">
+  <target name="init" depends="required-download-all" unless="required.JooS.loaded">
     <echo message="${ant.project.name} Init - OK" />
   </target>
 </project>
