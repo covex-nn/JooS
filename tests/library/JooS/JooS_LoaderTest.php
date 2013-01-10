@@ -12,7 +12,7 @@ class JooS_LoaderTest extends PHPUnit_Framework_TestCase
 
   public function testLoadClass()
   {
-    $exists1 = JooS_Loader::loadClass("JooS_Exception");
+    $exists1 = JooS_Loader::loadClass("JooS_Namespace");
     $this->assertTrue($exists1);
 
     $exists2 = JooS_Loader::loadClass("JooS_Exception_Class_Not_Exists");
