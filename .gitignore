@@ -1,5 +1,6 @@
+/nbproject
 /build/ci
 /build/build.local.properties
-/nbproject
-/target
+/build/build.required.properties
 /external
+/target
