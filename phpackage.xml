@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <control>
-<package name="JooS" version="2.0">
+<package name="JooS" version="3.0">
   <source><![CDATA[
     "library", "bootstrap.php"
   ]]></source>
@@ -8,6 +8,13 @@
   <depends><![CDATA[
     extension::json
   ]]></depends>
+  
+  <breaks><![CDATA[
+    JooS_Syntax < 3.0, 
+    JooS_Stream < 3.0, 
+    JooS_PHPackager < 3.0, 
+    JooS_Deploy < 3.0
+  ]]></breaks>
   
   <add>
     <?pre-install
