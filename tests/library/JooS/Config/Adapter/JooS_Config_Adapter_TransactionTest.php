@@ -1,63 +1,65 @@
 <?php
 
+namespace JooS\Config;
+
 require_once "JooS/Config/Adapter/Transaction.php";
 
-class JooS_Config_Adapter_TransactionTest extends PHPUnit_Framework_TestCase
+class Adapter_TransactionTest extends \PHPUnit_Framework_TestCase
 {
 
   public function testInstance()
   {
-    $start1 = JooS_Config_Adapter_Transaction::start();
+    $start1 = Adapter_Transaction::start();
     $this->assertTrue($start1);
-    $start2 = JooS_Config_Adapter_Transaction::start();
+    $start2 = Adapter_Transaction::start();
     $this->assertFalse($start2);
 
-    $commit1 = JooS_Config_Adapter_Transaction::commit();
+    $commit1 = Adapter_Transaction::commit();
     $this->assertTrue($commit1);
-    $commit2 = JooS_Config_Adapter_Transaction::commit();
+    $commit2 = Adapter_Transaction::commit();
     $this->assertFalse($commit2);
-    $cancel1 = JooS_Config_Adapter_Transaction::cancel();
+    $cancel1 = Adapter_Transaction::cancel();
     $this->assertFalse($cancel1);
   }
 
   public function testCommit()
   {
-    JooS_Config_Adapter_Transaction::start();
+    Adapter_Transaction::start();
 
-    $config1 = JooS_Config::getInstance("Test");
+    $config1 = Config::getInstance("Test");
     $config1->qqq = "www";
 
-    JooS_Config::saveInstance("Test");
+    Config::saveInstance("Test");
 
-    JooS_Config_Adapter_Transaction::commit();
+    Adapter_Transaction::commit();
 
-    JooS_Config::clearInstance("Test");
+    Config::clearInstance("Test");
 
-    $config2 = JooS_Config::getInstance("Test");
+    $config2 = Config::getInstance("Test");
     $this->assertEquals("www", $config2->qqq->valueOf());
 
-    JooS_Config_Adapter_Transaction::start();
+    Adapter_Transaction::start();
 
-    JooS_Config::deleteInstance("Test");
+    Config::deleteInstance("Test");
 
-    JooS_Config_Adapter_Transaction::commit();
+    Adapter_Transaction::commit();
 
-    $config3 = JooS_Config::getInstance("Test");
+    $config3 = Config::getInstance("Test");
     $this->assertEquals(array(), $config3->valueOf());
   }
 
   public function testCancel()
   {
-    JooS_Config_Adapter_Transaction::start();
+    Adapter_Transaction::start();
 
-    $config1 = JooS_Config::getInstance("Test");
+    $config1 = Config::getInstance("Test");
     $config1->qqq = "www";
-    JooS_Config::saveInstance("Test");
+    Config::saveInstance("Test");
 
-    $cancel1 = JooS_Config_Adapter_Transaction::cancel();
+    $cancel1 = Adapter_Transaction::cancel();
     $this->assertTrue($cancel1);
 
-    $config2 = JooS_Config::getInstance("Test");
+    $config2 = Config::getInstance("Test");
     $this->assertEquals(array(), $config2->valueOf());
   }
 
@@ -65,17 +67,17 @@ class JooS_Config_Adapter_TransactionTest extends PHPUnit_Framework_TestCase
   {
     require_once "JooS/Config/Adapter/PHPUnit/Testing.php";
     
-    $adapter = new JooS_Config_Adapter_PHPUnit_Testing(array());
+    $adapter = new Adapter_PHPUnit_Testing(array());
     
-    require_once "JooS/Config.php";
+    require_once "JooS/Config/Config.php";
 
-    JooS_Config::clearAll();
-    JooS_Config::setDataAdapter($adapter);
+    Config::clearAll();
+    Config::setDataAdapter($adapter);
   }
 
   protected function tearDown()
   {
-    JooS_Config::clearDataAdapter();
+    Config::clearDataAdapter();
   }
 
 }

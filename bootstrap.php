@@ -6,12 +6,12 @@ set_include_path(
 
 require_once "JooS/Config/Adapter/Serialized.php";
 
-$configAdapter = new JooS_Config_Adapter_Serialized(__DIR__ . "/config");
+$configAdapter = new JooS\Config\Adapter_Serialized(__DIR__ . "/config");
 
-require_once "JooS/Config.php";
+require_once "JooS/Config/Config.php";
 
-JooS_Config::setDataAdapter($configAdapter);
+JooS\Config\Config::setDataAdapter($configAdapter);
 
 require_once "JooS/Event/Bootstrap.php";
 
-JooS_Event_Bootstrap::getInstance()->notify();
+JooS\Event\Bootstrap::getInstance()->notify();

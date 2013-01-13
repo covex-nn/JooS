@@ -4,17 +4,21 @@
  * @package JooS
  * @subpackage Log
  */
-require_once "JooS/Event.php";
+namespace JooS\Log;
+
+use JooS\Event\Event;
+
+require_once "JooS/Event/Event.php";
 
 /**
  * Event "Append data to log"
  * 
  * @property string $message Data
  * 
- * @method JooS_Event_Log setMessage(string $value) Set message
- * @method JooS_Event_Log getInstance() Return event instance
+ * @method Log_Event setMessage(string $value) Set message
+ * @method Log_Event getInstance() Return event instance
  */
-class JooS_Event_Log extends JooS_Event
+class Log_Event extends Event
 {
   
   /**

@@ -4,12 +4,14 @@
  * @package JooS
  * @subpackage Deploy
  */
+namespace JooS\Config;
+
 require_once "JooS/Config/Adapter/Interface.php";
 
 /**
  * Config adapter "Serialized data".
  */
-class JooS_Config_Adapter_Serialized implements JooS_Config_Adapter_Interface
+class Adapter_Serialized implements Adapter_Interface
 {
   
   /**
@@ -63,12 +65,12 @@ class JooS_Config_Adapter_Serialized implements JooS_Config_Adapter_Interface
   /**
    * Save config data
    * 
-   * @param string      $name   Config name
-   * @param JooS_Config $config Config data
+   * @param string $name   Config name
+   * @param Config $config Config data
    * 
    * @return boolean
    */
-  public function save($name, JooS_Config $config)
+  public function save($name, Config $config)
   {
     $path = $this->_getPath($name);
     

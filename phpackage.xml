@@ -18,7 +18,7 @@
   
   <add>
     <?pre-install
-      attach("JooS_Event_Log", array("JooS_Log", "observer"));
+      attach("JooS\\Log\\Log_Event", array("JooS\\Log\\Log", "observer"));
       $/logWriters = array(
         "output"
       );
@@ -36,7 +36,7 @@
   <delete>
     <?post-remove
       #JooS_Log/writers = array();
-      detach("JooS_Event_Log", array("JooS_Log", "observer"));
+      detach("JooS\\Log\\Log_Event", array("JooS\\Log\\Log", "observer"));
     ?>
   </delete>
 </package>

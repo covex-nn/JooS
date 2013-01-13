@@ -1,8 +1,10 @@
 <?php
 
+namespace JooS;
+
 require_once "JooS/Object.php";
 
-class JooS_Object_PHPUnit_Testing extends JooS_Object
+class Object_PHPUnit_Testing extends Object
 {
   public function validateParam2($value)
   {

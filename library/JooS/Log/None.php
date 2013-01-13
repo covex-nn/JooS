@@ -4,12 +4,14 @@
  * @package JooS
  * @subpackage Log
  */
-require_once "JooS/Log/Interface.php";
+namespace JooS\Log;
+
+require_once "JooS/Log/Log\Interface.php";
 
 /**
  * Do not write log data.
  */
-class JooS_Log_Null implements JooS_Log_Interface
+class None implements Log_Interface
 {
   
   /**

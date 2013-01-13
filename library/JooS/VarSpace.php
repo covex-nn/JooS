@@ -3,11 +3,12 @@
 /**
  * @package JooS
  */
+namespace JooS;
 
 /**
  * Namespace from CityDNK's template-engine for #value/value.
  */
-final class JooS_Namespace
+class VarSpace
 {
 
   const DELIMITER = "/";

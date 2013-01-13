@@ -1,15 +1,17 @@
 <?php
 
-require_once "JooS/Namespace.php";
+namespace JooS;
+
+require_once "JooS/VarSpace.php";
 
 /**
- * Test class for JooS_Namespace.
+ * Test class for JooS\Variable.
  */
-class JooS_NamespaceTest extends PHPUnit_Framework_TestCase
+class VarSpaceTest extends \PHPUnit_Framework_TestCase
 {
 
   /**
-   * @var JooS_Namespace
+   * @var VarSpace
    */
   protected $ns;
 
@@ -19,7 +21,7 @@ class JooS_NamespaceTest extends PHPUnit_Framework_TestCase
    */
   protected function setUp()
   {
-    $this->ns = new JooS_Namespace();
+    $this->ns = new VarSpace();
     $this->ns->set($this->ns->getRoot("name"), 1);
   }
 

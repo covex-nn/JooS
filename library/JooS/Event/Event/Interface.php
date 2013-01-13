@@ -4,11 +4,12 @@
  * @package JooS
  * @subpackage Event
  */
+namespace JooS\Event;
 
 /**
  * Интерфейс для события.
  */
-interface JooS_Event_Interface
+interface Event_Interface
 {
 
   /**
@@ -16,14 +17,14 @@ interface JooS_Event_Interface
    * 
    * @todo Проверить все ли события используют new static ?
    * 
-   * @return JooS_Event_Interface
+   * @return Event_Interface
    */
   public static function getInstance();
 
   /**
    * Notify observers.
    * 
-   * @return JooS_Event_Interface
+   * @return Event_Interface
    */
   public function notify();
 
@@ -32,7 +33,7 @@ interface JooS_Event_Interface
    * 
    * @param callback $observer Observer
    * 
-   * @return JooS_Event_Interface
+   * @return Event_Interface
    */
   public function attach($observer);
 
@@ -41,15 +42,15 @@ interface JooS_Event_Interface
    * 
    * @param type $observer Observer
    * 
-   * @return JooS_Event_Interface
+   * @return Event_Interface
    */
   public function detach($observer);
 
   /**
    * Cancel event.
    * 
-   * @param string $message Message for JooS_Event_Exception
-   * @param int    $code    Code for JooS_Event_Exception
+   * @param string $message Message for Event_Exception
+   * @param int    $code    Code for Event_Exception
    * 
    * @return null
    */

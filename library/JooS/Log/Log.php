@@ -4,21 +4,25 @@
  * @package JooS
  * @subpackage Log
  */
+namespace JooS\Log;
+
+use JooS\Loader;
+use JooS\Config\Config;
 
 /**
  * Log phpackage/deploy messages.
  */
-class JooS_Log
+class Log
 {
   
   /**
    * Event observer
    * 
-   * @param JooS_Event_Log $event Event
+   * @param Log_Event $event Event
    * 
    * @return boolean
    */
-  public static function observer(JooS_Event_Log $event)
+  public static function observer(Log_Event $event)
   {
     foreach (self::getWriters() as $writer) {
       /* @var $writer JooS_Log_Interface */
@@ -43,16 +47,17 @@ class JooS_Log
     if (is_null(self::$_writers)) {
       require_once "JooS/Loader.php";
       
-      require_once "JooS/Config.php";
+      require_once "JooS/Config/Config.php";
       
-      $writers = JooS_Config::getInstance("JooS_Log")->writers;
+      $writers = Config::getInstance("JooS_Log")->writers;
       /* @var $writers JooS_Config */
       if (!is_null($writers)) {
         foreach ($writers->valueOf() as $name) {
-          $className = JooS_Loader::getClassName(__CLASS__, $name, true);
-          if (JooS_Loader::loadClass($className)) {
+          $name = ucfirst(strtolower($name));
+          $className = Loader::getClassName(__NAMESPACE__ . "\\", $name);
+          if (Loader::loadClass($className)) {
             $writer = new $className();
-            if ($writer instanceof JooS_Log_Interface) {
+            if ($writer instanceof Log_Interface) {
               self::addWriter($writer);
             }
           }
@@ -67,11 +72,11 @@ class JooS_Log
   /**
    * Add new writer
    * 
-   * @param JooS_Log_Interface $writer Log writer
+   * @param Log_Interface $writer Log writer
    * 
    * @return boolean
    */
-  public static function addWriter(JooS_Log_Interface $writer)
+  public static function addWriter(Log_Interface $writer)
   {
     if (is_null(self::$_writers)) {
       self::$_writers = array();

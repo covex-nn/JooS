@@ -1,12 +1,14 @@
 <?php
 
-require_once "JooS/Event.php";
+namespace JooS\Event;
+
+require_once "JooS/Event/Event.php";
 
 /**
  * @property param1
- * @method JooS_Event_PHPUnit_Testing getInstance() Return event instance
+ * @method PHPUnit_Testing getInstance() Return event instance
  */
-class JooS_Event_PHPUnit_Testing extends JooS_Event
+class PHPUnit_Testing extends Event
 {
   
 }

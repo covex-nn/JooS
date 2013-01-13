@@ -4,17 +4,18 @@
  * @package JooS
  * @subpackage Helper
  */
+namespace JooS\Helper;
 
 /**
  * Interface for Helper Subject
  */
-interface JooS_Helper_Subject
+interface Subject
 {
 
   /**
    * creates Helper Broker for object
    * 
-   * @return JooS_Helper_Broker
+   * @return Broker
    */
   public function helperBroker();
 

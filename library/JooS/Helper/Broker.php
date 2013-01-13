@@ -4,14 +4,17 @@
  * @package JooS
  * @subpackage Helper
  */
+namespace JooS\Helper;
+
+use ReflectionClass;
+use JooS\Config\Config;
+use JooS\Loader;
 
 /**
  * Helper broker.
  */
-final class JooS_Helper_Broker implements ArrayAccess
+final class Broker implements \ArrayAccess
 {
-
-  const HELPER_SUBJECT_INTERFACE = "JooS_Helper_Subject";
 
   private $_helpers = array();
 
@@ -22,7 +25,7 @@ final class JooS_Helper_Broker implements ArrayAccess
   private static $_paths = null;
 
   /**
-   * Adds prefix to existing helpers className.
+   * Adds namespace-prefix to existing helpers className
    * 
    * @param string $prefix Prefix
    * 
@@ -30,8 +33,8 @@ final class JooS_Helper_Broker implements ArrayAccess
    */
   public static function addPrefix($prefix)
   {
-    $prefix = rtrim($prefix, '_') . "_";
-    $path = str_replace('_', DIRECTORY_SEPARATOR, $prefix);
+    $prefix = rtrim($prefix, "\\") . "\\";
+    $path = str_replace("\\", "/", $prefix);
 
     $newPrefix = array(
       "dir" => $path,
@@ -44,7 +47,7 @@ final class JooS_Helper_Broker implements ArrayAccess
   }
 
   /**
-   * Returns all available helper classNames prefixes.
+   * Returns all available helper classNames prefixes
    * 
    * @return array
    */
@@ -54,7 +57,7 @@ final class JooS_Helper_Broker implements ArrayAccess
   }
 
   /**
-   * Clears all helpers classNames prefixes.
+   * Clears all helpers classNames prefixes
    * 
    * @return null
    */
@@ -65,13 +68,13 @@ final class JooS_Helper_Broker implements ArrayAccess
   }
 
   /**
-   * Create new helper instance for subject.
+   * Create new helper instance for subject
    * 
-   * @param JooS_Helper_Subject $subject Subject
+   * @param Subject $subject Subject
    * 
-   * @return JooS_Helper_Broker
+   * @return Broker
    */
-  public static function newInstance(JooS_Helper_Subject $subject)
+  public static function newInstance(Subject $subject)
   {
     $newInstance = new self();
     $newInstance->_subject = $subject;
@@ -80,7 +83,7 @@ final class JooS_Helper_Broker implements ArrayAccess
   }
 
   /**
-   * Returns ReflectionClass for helper's class (???).
+   * Returns ReflectionClass for helper's class (???)
    * 
    * @param string $helper    Name
    * @param array  $arguments Not used
@@ -94,19 +97,18 @@ final class JooS_Helper_Broker implements ArrayAccess
   }
 
   /**
-   * Returns helper.
+   * Returns helper
    * 
    * @param string $helper Name
    * 
-   * @covers JooS_Helper_Broker::offsetGet
-   * @return JooS_Helper_Abstract
+   * @return Helper_Abstract
    */
   public function __get($helper)
   {
     if (!$this->__isset($helper)) {
       require_once "JooS/Helper/Exception.php";
 
-      throw new JooS_Helper_Exception("Helper '$helper' was not found");
+      throw new Exception("Helper '$helper' was not found");
     }
 
     return $this->_helpers[$helper];
@@ -124,7 +126,7 @@ final class JooS_Helper_Broker implements ArrayAccess
     $has = true;
     try {
       $this->_getHelper($helper);
-    } catch (JooS_Helper_Exception $e) {
+    } catch (Exception $e) {
       $has = false;
     }
     return $has;
@@ -137,14 +139,14 @@ final class JooS_Helper_Broker implements ArrayAccess
    * @param mixed  $value Value
    * 
    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-   * @throws JooS_Helper_Exception
+   * @throws Exception
    * @return null
    */
   public function __set($name, $value)
   {
     require_once "JooS/Helper/Exception.php";
 
-    throw new JooS_Helper_Exception("Forbidden");
+    throw new Exception("Forbidden");
   }
 
   /**
@@ -153,14 +155,14 @@ final class JooS_Helper_Broker implements ArrayAccess
    * @param string $name Name
    * 
    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-   * @throws JooS_Helper_Exception
+   * @throws Exception
    * @return null
    */
   public function __unset($name)
   {
     require_once "JooS/Helper/Exception.php";
 
-    throw new JooS_Helper_Exception("Forbidden");
+    throw new Exception("Forbidden");
   }
 
   /**
@@ -194,14 +196,11 @@ final class JooS_Helper_Broker implements ArrayAccess
    * @param mixed  $value  Value
    * 
    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-   * @throws JooS_Helper_Exception
    * @return null
    */
   public function offsetSet($offset, $value)
   {
-    require_once "JooS/Helper/Exception.php";
-
-    throw new JooS_Helper_Exception("Forbidden");
+    $this->__set($offset, $value);
   }
 
   /**
@@ -210,14 +209,11 @@ final class JooS_Helper_Broker implements ArrayAccess
    * @param type $offset Name
    * 
    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-   * @throws JooS_Helper_Exception
    * @return null
    */
   public function offsetUnset($offset)
   {
-    require_once "JooS/Helper/Exception.php";
-
-    throw new JooS_Helper_Exception("Forbidden");
+    $this->__unset($offset);
   }
 
   /**
@@ -226,10 +222,10 @@ final class JooS_Helper_Broker implements ArrayAccess
   private function __construct()
   {
     if (is_null(self::$_paths)) {
-      require_once "JooS/Config.php";
+      require_once "JooS/Config/Config.php";
 
       self::clearPrefixes();
-      $prefixes = JooS_Config::Helper_Broker()->prefixes();
+      $prefixes = Config::Helper_Broker()->prefixes();
 
       if (is_array($prefixes)) {
         foreach ($prefixes as $prefix) {
@@ -244,7 +240,7 @@ final class JooS_Helper_Broker implements ArrayAccess
    * 
    * @param string $helper Name
    * 
-   * @return JooS_Helper_Abstract
+   * @return Helper_Abstract
    */
   private function _getHelper($helper)
   {
@@ -271,7 +267,7 @@ final class JooS_Helper_Broker implements ArrayAccess
       $className = null;
       for ($i = sizeof(self::$_paths) - 1; $i >= 0; $i--) {
         $className = self::$_paths[$i]["prefix"] . $helper;
-        if (JooS_Loader::loadClass($className)) {
+        if (Loader::loadClass($className)) {
           break;
         } else {
           $className = null;
@@ -280,18 +276,18 @@ final class JooS_Helper_Broker implements ArrayAccess
       if (is_null($className)) {
         require_once "JooS/Helper/Exception.php";
 
-        throw new JooS_Helper_Exception("Helper '$helper' was not found");
+        throw new Exception("Helper '$helper' was not found");
       }
 
       $rHelper = new ReflectionClass($className);
-      if ($rHelper->implementsInterface("JooS_Helper_Interface")) {
+      if ($rHelper->implementsInterface("JooS\\Helper\\Helper_Interface")) {
         self::$_loadedHelpers[$helper] = $rHelper;
         $rHelper->getMethod("init")->invoke(null);
       } else {
         require_once "JooS/Helper/Exception.php";
 
-        throw new JooS_Helper_Exception(
-          "Helper '$helper' must implement JooS_Helper_Interface"
+        throw new Exception(
+          "Helper '$helper' must implement JooS\\Helper\\Helper_Interface"
         );
       }
     }

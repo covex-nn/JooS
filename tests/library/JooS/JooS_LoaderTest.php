@@ -1,32 +1,40 @@
 <?php
 
-require_once "JooS/Loader.php";
+namespace JooS;
 
-require_once "JooS/Config.php";
+require_once "JooS/Loader.php";
 
 /**
  * Test class for JooS_Loader.
  */
-class JooS_LoaderTest extends PHPUnit_Framework_TestCase
+class LoaderTest extends \PHPUnit_Framework_TestCase
 {
 
   public function testLoadClass()
   {
-    $exists1 = JooS_Loader::loadClass("JooS_Namespace");
+    $exists1 = Loader::loadClass('\JooS\VarSpace');
     $this->assertTrue($exists1);
 
-    $exists2 = JooS_Loader::loadClass("JooS_Exception_Class_Not_Exists");
+    $exists2 = Loader::loadClass('JooS_Exception_Class_Not_Exists');
     $this->assertFalse($exists2);
 
-    $exists3 = JooS_Loader::loadClass("JooS_Loader");
+    $exists3 = Loader::loadClass('PHPUnit_Framework_TestCase');
     $this->assertTrue($exists3);
   }
 
   public function testGetClassName()
   {
-    $this->assertEquals("qqq_Class1", JooS_Loader::getClassName("qqq", "Class1"));
+    $this->assertEquals("qqq_Class1", Loader::getClassName("qqq", "Class1"));
 
-    $this->assertEquals("qqq_Class1_Class2", JooS_Loader::getClassName("qqq", "claSS1_class2", true));
+    $this->assertEquals("NS\\qqq_Class1", Loader::getClassName("NS\\qqq", 'Class1'));
+    
+    $this->assertEquals("Qqq_Class1_Class2", Loader::getClassName("qqq", "claSS1_class2", true));
+
+    $this->assertEquals("Ns1\\Ns2\\Class1_Class2", Loader::getClassName("ns1\\ns2\\", "class1_CLASS2", true));
+    
+    $this->assertEquals("Ns1\\Ns2\\Class1_Class2", Loader::getClassName("ns1\\", "ns2\\class1_Class2", true));
+
+    $this->assertEquals("\\Ns1_ns2\\Class1_Class2", Loader::getClassName("\\ns1_NS2\\", "class1_Class2", true));
   }
 
 }

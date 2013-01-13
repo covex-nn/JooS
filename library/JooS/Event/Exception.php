@@ -4,11 +4,12 @@
  * @package JooS
  * @subpackage Event
  */
+namespace JooS\Event;
 
 /**
  * Exception for event's cancelation.
  */
-class JooS_Event_Exception extends \Exception
+class Exception extends \Exception
 {
   
 }

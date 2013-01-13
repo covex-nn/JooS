@@ -1,20 +1,19 @@
 <?php
 
+namespace JooS\Helper;
+
 require_once "JooS/Helper/Broker.php";
 require_once "JooS/Helper/Subject.php";
-require_once "JooS/Helper/Abstract.php";
+require_once "JooS/Helper/Helper/Abstract.php";
 
-/**
- * Test class for JooS_Helper_Broker.
- */
-class JooS_Helper_BrokerTest extends PHPUnit_Framework_TestCase
+class BrokerTest extends \PHPUnit_Framework_TestCase
 {
 
   public function testCallHelper_returnParam()
   {
     require_once "JooS/Helper/Subject/PHPUnit/Testing.php";
 
-    $helperSubject = new JooS_Helper_Subject_PHPUnit_Testing();
+    $helperSubject = new Subject_PHPUnit_Testing();
 
     $helperSubject->helperBroker()->Helper_Object_PHPUnit_Testing1();
 
@@ -25,17 +24,17 @@ class JooS_Helper_BrokerTest extends PHPUnit_Framework_TestCase
     );
 
     $this->assertEquals(
-      "JooS_Helper_Subject_PHPUnit_Testing", $helperSubject->helperBroker()->Helper_Object_PHPUnit_Testing2->func()
+      "JooS\Helper\Subject_PHPUnit_Testing", $helperSubject->helperBroker()->Helper_Object_PHPUnit_Testing2->func()
     );
   }
 
   public function testArrayAccess()
   {
-    $helperSubject = new JooS_Helper_Subject_PHPUnit_Testing();
+    $helperSubject = new Subject_PHPUnit_Testing();
     $helperBroker = $helperSubject->helperBroker();
 
     $this->assertTrue(isset($helperBroker["Helper_Object_PHPUnit_Testing1"]));
-    $this->assertEquals("JooS_Helper_Object_PHPUnit_Testing1", get_class($helperBroker["Helper_Object_PHPUnit_Testing1"]));
+    $this->assertEquals("JooS\Helper_Object_PHPUnit_Testing1", get_class($helperBroker["Helper_Object_PHPUnit_Testing1"]));
   }
 
   /**
@@ -43,89 +42,95 @@ class JooS_Helper_BrokerTest extends PHPUnit_Framework_TestCase
    */
   public function testPrefixes()
   {
-    JooS_Helper_Broker::clearPrefixes();
+    Broker::clearPrefixes();
 
-    $this->assertEquals(array(
+    $this->assertEquals(
       array(
-        "dir" => "JooS" . DIRECTORY_SEPARATOR,
-        "prefix" => "JooS_"
-      )
-      ), JooS_Helper_Broker::getPrefixes());
+        array(
+          "dir" => "JooS/",
+          "prefix" => "JooS\\"
+        )
+      ), 
+      Broker::getPrefixes()
+    );
 
-    JooS_Helper_Broker::addPrefix("JooSX_Test");
+    Broker::addPrefix("JooSX\\Test");
 
-    $this->assertEquals(array(
+    $this->assertEquals(
       array(
-        "dir" => "JooS" . DIRECTORY_SEPARATOR,
-        "prefix" => "JooS_"
+        array(
+          "dir" => "JooS/",
+          "prefix" => "JooS\\"
+        ),
+        array(
+          "dir" => "JooSX/Test/",
+          "prefix" => "JooSX\\Test\\"
+        )
       ),
-      array(
-        "dir" => "JooSX" . DIRECTORY_SEPARATOR . "Test" . DIRECTORY_SEPARATOR,
-        "prefix" => "JooSX_Test_"
-      )
-      ), JooS_Helper_Broker::getPrefixes());
+      Broker::getPrefixes()
+    );
   }
 
   public function testError_helperDoesNotExists()
   {
-    $helperSubject = new JooS_Helper_Subject_PHPUnit_Testing();
+    $helperSubject = new Subject_PHPUnit_Testing();
 
     $this->assertTrue(!isset($helperSubject->Helper_Does_Not_Exists));
   }
 
   /**
-   * @expectedException JooS_Helper_Exception
+   * @expectedException JooS\Helper\Exception
    */
   public function testError_helperDoesNotExists2()
   {
-    $helperSubject = new JooS_Helper_Subject_PHPUnit_Testing();
+    $helperSubject = new Subject_PHPUnit_Testing();
 
     $a = $helperSubject->helperBroker()->Helper_Does_Not_Exists;
   }
 
   /**
-   * @expectedException JooS_Helper_Exception
+   * @expectedException JooS\Helper\Exception
    */
   public function testError_helperMustImplement()
   {
-    $helperSubject = new JooS_Helper_Subject_PHPUnit_Testing();
-    $helperSubject->helperBroker()->Namespace();
+    $helperSubject = new Subject_PHPUnit_Testing();
+    $helperSubject->helperBroker()->Loader();
   }
 
   /**
-   * @expectedException JooS_Helper_Exception
+   * @expectedException JooS\Helper\Exception
    */
   public function testError_helper__setForbidden()
   {
-    $helperSubject = new JooS_Helper_Subject_PHPUnit_Testing();
+    $helperSubject = new Subject_PHPUnit_Testing();
     $helperSubject->helperBroker()->Helper_Subject_PHPUnit_Testing = 1;
   }
 
   /**
-   * @expectedException JooS_Helper_Exception
+   * @expectedException JooS\Helper\Exception
    */
   public function testError_helper__unsetForbidden()
   {
-    $helperSubject = new JooS_Helper_Subject_PHPUnit_Testing();
+    $helperSubject = new Subject_PHPUnit_Testing();
     unset($helperSubject->helperBroker()->Helper_Subject_PHPUnit_Testing);
   }
 
   /**
-   * @expectedException JooS_Helper_Exception
+   * @expectedException JooS\Helper\Exception
    */
   public function testError_helperOffsetSetForbidden()
   {
-    $helperSubject = new JooS_Helper_Subject_PHPUnit_Testing();
+    $helperSubject = new Subject_PHPUnit_Testing();
     $helperBroker = $helperSubject->helperBroker();
     $helperBroker["Helper_Subject_PHPUnit_Testing"] = 1;
   }
 
   /**
-   * @expectedException JooS_Helper_Exception
+   * @expectedException JooS\Helper\Exception
    */
   public function testError_helperOffsetUnsetForbidden()
   {
-    $helperSubject = new JooS_Helper_Subject_PHPUnit_Testing();
+    $helperSubject = new Subject_PHPUnit_Testing();
     $helperBroker = $helperSubject->helperBroker();
     unset($helperBroker["Helper_Subject_PHPUnit_Testing"]);
   }

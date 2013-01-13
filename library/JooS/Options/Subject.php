@@ -4,17 +4,18 @@
  * @package JooS
  * @subpackage Helper
  */
+namespace JooS;
 
 /**
  * Options helper-subject's interface
  */
-interface JooS_Options_Subject
+interface Options_Subject
 {
   
   /**
    * Return options object
    * 
-   * @return JooS_Options
+   * @return Options
    */
   public function getOptions();
   

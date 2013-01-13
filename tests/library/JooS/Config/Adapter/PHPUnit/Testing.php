@@ -1,8 +1,10 @@
 <?php
 
+namespace JooS\Config;
+
 require_once "JooS/Config/Adapter/Interface.php";
 
-class JooS_Config_Adapter_PHPUnit_Testing implements JooS_Config_Adapter_Interface
+class Adapter_PHPUnit_Testing implements Adapter_Interface
 {
 
   /**
@@ -25,7 +27,7 @@ class JooS_Config_Adapter_PHPUnit_Testing implements JooS_Config_Adapter_Interfa
     return $data;
   }
 
-  public function save($name, JooS_Config $config)
+  public function save($name, Config $config)
   {
     $this->_data[$name] = $config->valueOf();
 

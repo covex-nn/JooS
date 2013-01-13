@@ -2,23 +2,25 @@
 
 /**
  * @package JooS
- * @subpackage Deploy
+ * @subpackage Config
  */
+namespace JooS\Config;
+
 require_once "JooS/Config/Adapter/Interface.php";
 
 /**
  * Transaction config adapter.
  */
-class JooS_Config_Adapter_Transaction implements JooS_Config_Adapter_Interface
+class Adapter_Transaction implements Adapter_Interface
 {
 
   /**
-   * @var JooS_Config_Adapter_Interface
+   * @var Adapter_Interface
    */
   private $_stored;
   
   /**
-   * @var JooS_Config_Adapter_Transaction
+   * @var Adapter_Transaction
    */
   private static $_transaction = null;
   
@@ -64,12 +66,12 @@ class JooS_Config_Adapter_Transaction implements JooS_Config_Adapter_Interface
   /**
    * Save config data
    * 
-   * @param string      $name   Config name
-   * @param JooS_Config $config Config data
+   * @param string $name   Config name
+   * @param Config $config Config data
    * 
    * @return boolean
    */
-  public function save($name, JooS_Config $config)
+  public function save($name, Config $config)
   {
     $this->_data[$name] = $config;
     
@@ -98,12 +100,12 @@ class JooS_Config_Adapter_Transaction implements JooS_Config_Adapter_Interface
   public static function start()
   {
     if (is_null(self::$_transaction)) {
-      require_once "JooS/Config.php";
+      require_once "JooS/Config/Config.php";
       
       $object = self::$_transaction = new self();
-      $object->_stored = JooS_Config::getDataAdapter();
+      $object->_stored = Config::getDataAdapter();
       
-      JooS_Config::setDataAdapter($object);
+      Config::setDataAdapter($object);
       
       $result = true;
     } else {
@@ -128,12 +130,12 @@ class JooS_Config_Adapter_Transaction implements JooS_Config_Adapter_Interface
       $aTran = self::$_transaction;
       $aCurr = $aTran->_stored;
 
-      require_once "JooS/Config.php";
+      require_once "JooS/Config/Config.php";
       
       if (!is_null($aCurr)) {
         $names = array_keys($aTran->_data);
         foreach ($names as $name) {
-          JooS_Config::clearInstance($name);
+          Config::clearInstance($name);
         }
       }
       
@@ -161,7 +163,7 @@ class JooS_Config_Adapter_Transaction implements JooS_Config_Adapter_Interface
       
       if (!is_null($aCurr)) {
         foreach ($aTran->_data as $name => $value) {
-          /* @var $value JooS_Config */
+          /* @var $value Config */
           if (is_null($value)) {
             $aCurr->delete($name);
           } else {
@@ -186,12 +188,12 @@ class JooS_Config_Adapter_Transaction implements JooS_Config_Adapter_Interface
   {
     $adapter = self::$_transaction->_stored;
     
-    require_once "JooS/Config.php";
+    require_once "JooS/Config/Config.php";
 
     if (is_null($adapter)) {
-      JooS_Config::clearDataAdapter();
+      Config::clearDataAdapter();
     } else {
-      JooS_Config::setDataAdapter($adapter);
+      Config::setDataAdapter($adapter);
     }
   }
   

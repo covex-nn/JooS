@@ -3,11 +3,12 @@
 /**
  * @package JooS
  */
+namespace JooS;
 
 /**
  * ArrayObject
  */
-class JooS_Object
+class Object
 {
   
   /**
@@ -22,7 +23,7 @@ class JooS_Object
    * @param mixed  $value Value
    * 
    * @return null
-   * @throws JooS_Object_Exception
+   * @throws Object_Exception
    */
   public function __set($name, $value)
   {
@@ -42,7 +43,7 @@ class JooS_Object
     } else {
       require_once "JooS/Object/Exception.php";
       
-      throw new JooS_Object_Exception("Type mismatch for '$name'");
+      throw new Object_Exception("Type mismatch for '$name'");
     }
   }
   

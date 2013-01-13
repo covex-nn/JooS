@@ -4,14 +4,20 @@
  * @package JooS
  * @subpackage Event
  */
+namespace JooS\Event;
+
+use JooS\Object;
+use JooS\Config\Config;
+use JooS\Loader;
+
 require_once "JooS/Object.php";
 
-require_once "JooS/Event/Interface.php";
+require_once "JooS/Event/Event/Interface.php";
 
 /**
  * Event.
  */
-abstract class JooS_Event extends JooS_Object implements JooS_Event_Interface
+abstract class Event extends Object implements Event_Interface
 {
 
   /**
@@ -36,13 +42,13 @@ abstract class JooS_Event extends JooS_Object implements JooS_Event_Interface
    * Cloning not allowed.
    * 
    * @return null
-   * @throws JooS_Event_Exception
+   * @throws Exception
    */
   final public function __clone()
   {
     require_once "JooS/Event/Exception.php";
     
-    throw new JooS_Event_Exception("Event object is singleton");
+    throw new Exception("Event object is singleton");
   }
 
   /**
@@ -58,7 +64,7 @@ abstract class JooS_Event extends JooS_Object implements JooS_Event_Interface
   /**
    * Return event instance
    * 
-   * @return JooS_Event
+   * @return Event
    */
   final public static function getInstance()
   {
@@ -82,9 +88,10 @@ abstract class JooS_Event extends JooS_Object implements JooS_Event_Interface
   final public static function clearInstance($className)
   {
     if (isset(self::$_instances[$className])) {
-      require_once "JooS/Config.php";
+      require_once "JooS/Config/Config.php";
 
-      JooS_Config::clearInstance($className);
+      $name = self::_configName($className);
+      Config::clearInstance($name);
 
       self::$_instances[$className]->_loadObservers();
     }
@@ -97,19 +104,19 @@ abstract class JooS_Event extends JooS_Object implements JooS_Event_Interface
    * @param int    $code    Exception code
    * 
    * @return null
-   * @throws JooS_Event_Exception
+   * @throws Exception
    */
   public function cancel($message = null, $code = null)
   {
     require_once "JooS/Event/Exception.php";
 
-    throw new JooS_Event_Exception($message, $code);
+    throw new Exception($message, $code);
   }
 
   /**
    * Notify observers.
    * 
-   * @return JooS_Event
+   * @return Event
    */
   final public function notify()
   {
@@ -124,7 +131,7 @@ abstract class JooS_Event extends JooS_Object implements JooS_Event_Interface
         default:
           require_once "JooS/Loader.php";
           
-          JooS_Loader::loadClass($observer[0]);
+          Loader::loadClass($observer[0]);
           break;
       }
 
@@ -143,7 +150,7 @@ abstract class JooS_Event extends JooS_Object implements JooS_Event_Interface
    * 
    * @param callback $observer Observer
    * 
-   * @return JooS_Event
+   * @return Event
    */
   final public function attach($observer)
   {
@@ -158,7 +165,7 @@ abstract class JooS_Event extends JooS_Object implements JooS_Event_Interface
    * 
    * @param callback $observer Observer
    * 
-   * @return JooS_Event 
+   * @return Event 
    */
   final public function detach($observer)
   {
@@ -196,10 +203,11 @@ abstract class JooS_Event extends JooS_Object implements JooS_Event_Interface
    */
   final public function save()
   {
-    $name = $this->name();
+    $class = $this->name();
+    $name = self::_configName($class);
     $observers = $this->observers();
     
-    $config = JooS_Config::newInstance($name, $observers);
+    $config = Config::newInstance($name, $observers);
     
     return $config->save();
   }
@@ -211,12 +219,25 @@ abstract class JooS_Event extends JooS_Object implements JooS_Event_Interface
    */
   private function _loadObservers()
   {
-    require_once "JooS/Config.php";
+    require_once "JooS/Config/Config.php";
 
-    $name = $this->name();
-    $config = JooS_Config::getInstance($name);
+    $class = $this->name();
+    $name = self::_configName($class);
+    $config = Config::getInstance($name);
     
     $this->_observers = $config->valueOf();
+  }
+  
+  /**
+   * A name of Config with list of observers
+   * 
+   * @param string $name Class name
+   * 
+   * @return string
+   */
+  private static function _configName($name)
+  {
+    return str_replace("\\", "_", $name);
   }
   
 }

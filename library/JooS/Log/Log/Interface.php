@@ -4,11 +4,12 @@
  * @package JooS
  * @subpackage Log
  */
+namespace JooS\Log;
 
 /**
  * Deploy/PHPackage data logger interface.
  */
-interface JooS_Log_Interface
+interface Log_Interface
 {
   
   /**

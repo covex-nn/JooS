@@ -4,11 +4,12 @@
  * @package JooS
  * @subpackage Helper
  */
+namespace JooS\Helper;
 
 /**
  * Exception.
  */
-class JooS_Helper_Exception extends \Exception
+class Exception extends \Exception
 {
   
 }

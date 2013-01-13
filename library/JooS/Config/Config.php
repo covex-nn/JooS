@@ -4,12 +4,12 @@
  * @package JooS
  * @subpackage Config
  */
-require_once "JooS/Config/Adapter/Interface.php";
+namespace JooS\Config;
 
 /**
  * Configuration.
  */
-class JooS_Config implements ArrayAccess, Iterator
+class Config implements \ArrayAccess, \Iterator
 {
 
   /**
@@ -18,7 +18,7 @@ class JooS_Config implements ArrayAccess, Iterator
   private $_data;
 
   /**
-   * @var JooS_Config
+   * @var Config
    */
   private $_root = null;
   
@@ -48,7 +48,7 @@ class JooS_Config implements ArrayAccess, Iterator
    * 
    * @param string $name Config name
    * 
-   * @return JooS_Config
+   * @return Config
    */
   public static function getInstance($name)
   {
@@ -63,7 +63,7 @@ class JooS_Config implements ArrayAccess, Iterator
       }
       
       $config = new self($data);
-      /* @var $config JooS_Config */
+      /* @var $config Config */
       $config->_root = $config;
       $config->_key = $key;
 
@@ -78,7 +78,7 @@ class JooS_Config implements ArrayAccess, Iterator
    * @param string $name Config name
    * @param array  $data Config data
    * 
-   * @return JooS_Config
+   * @return Config
    */
   public static function newInstance($name, $data = null)
   {
@@ -166,18 +166,18 @@ class JooS_Config implements ArrayAccess, Iterator
   }
 
   /**
-   * @var JooS_Config_Adapter_Interface
+   * @var Adapter_Interface
    */
   private static $_dataAdapter = null;
   
   /**
    * Set all-config data source
    * 
-   * @param JooS_Config_Adapter_Interface $dataAdapter Data source
+   * @param Adapter_Interface $dataAdapter Data source
    * 
    * @return null
    */
-  public static function setDataAdapter(JooS_Config_Adapter_Interface $dataAdapter)
+  public static function setDataAdapter(Adapter_Interface $dataAdapter)
   {
     self::$_dataAdapter = $dataAdapter;
   }
@@ -185,7 +185,7 @@ class JooS_Config implements ArrayAccess, Iterator
   /**
    * Return all-config data source
    * 
-   * @return JooS_Config_Adapter_Interface
+   * @return Adapter_Interface
    */
   public static function getDataAdapter()
   {
@@ -229,7 +229,7 @@ class JooS_Config implements ArrayAccess, Iterator
    * 
    * @param string $key Key
    * 
-   * @return JooS_Config
+   * @return Config
    */
   public function __get($key)
   {
@@ -262,7 +262,7 @@ class JooS_Config implements ArrayAccess, Iterator
 
     if (is_array($value) || is_scalar($value)) {
       $newValue = $value;
-    } elseif (is_object($value) && $value instanceof JooS_Config) {
+    } elseif (is_object($value) && $value instanceof Config) {
       $newValue = $value->valueOf();
     } else {
       trigger_error(
@@ -331,7 +331,7 @@ class JooS_Config implements ArrayAccess, Iterator
    * @param string $name      Config name
    * @param array  $arguments Arguments (not used)
    * 
-   * @return JooS_Config
+   * @return Config
    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    */
   public static function __callStatic($name, $arguments)
@@ -344,7 +344,7 @@ class JooS_Config implements ArrayAccess, Iterator
    * 
    * @param string $key Key
    * 
-   * @return JooS_Config
+   * @return Config
    */
   public function offsetGet($key)
   {

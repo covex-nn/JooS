@@ -3,11 +3,12 @@
 /**
  * @package JooS
  */
+namespace JooS;
 
 /**
  * Class Loader.
  */
-class JooS_Loader
+class Loader
 {
 
   /**
@@ -48,7 +49,15 @@ class JooS_Loader
    */
   public static function getPath($className, $ext = "php")
   {
-    return str_replace("_", DIRECTORY_SEPARATOR, $className) . "." . $ext;
+    if (substr($className, 0, 1) == "\\") {
+      $className = substr($className, 1);
+    }
+    
+    $delimiters = array("_", "\\");
+    foreach ($delimiters as $symbol) {
+      $className = str_replace($symbol, "/", $className);
+    }
+    return $className . "." . $ext;
   }
 
   /**
@@ -62,15 +71,40 @@ class JooS_Loader
    */
   public static function getClassName($prefix, $name, $ucfirst = false)
   {
+    if (substr($prefix, -1, 1) == "\\") {
+      $className = $prefix;
+    } else {
+      $className = $prefix . "_";
+    }
+    $className .= $name;
+    
     if ($ucfirst) {
-      $path = explode("_", $name);
-      for ($i = 0; $i < sizeof($path); $i++) {
-        $path[$i] = ucfirst(strtolower($path[$i]));
+      $result = "";
+      
+      $nsPath = explode("\\", $className);
+      $name = array_pop($nsPath);
+      
+      if (sizeof($nsPath)) {
+        for ($i = 0; $i < sizeof($nsPath); $i++) {
+          $nsPath[$i] = ucfirst(strtolower($nsPath[$i]));
+        }
+        $result .= implode("\\", $nsPath);
       }
-      $name = implode("_", $path);
+      if (strlen($result) && substr($result, -1, 1) != "\\") {
+        $result .= "\\";
+      }
+      
+      $dirPath = explode("_", $name);
+      for ($i = 0; $i < sizeof($dirPath); $i++) {
+        $dirPath[$i] = ucfirst(strtolower($dirPath[$i]));
+      }
+      $result .= implode("_", $dirPath);
+      
+    } else {
+      $result = $className;
     }
 
-    return ($prefix ? $prefix . "_" : "") . $name;
+    return $result;
   }
 
 }

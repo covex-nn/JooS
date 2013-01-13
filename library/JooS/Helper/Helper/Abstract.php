@@ -4,16 +4,18 @@
  * @package JooS
  * @subpackage Helper
  */
-require_once "JooS/Helper/Interface.php";
+namespace JooS\Helper;
+
+require_once "JooS/Helper/Helper/Interface.php";
 
 /**
  * Helper abstract.
  */
-abstract class JooS_Helper_Abstract implements JooS_Helper_Interface
+abstract class Helper_Abstract implements Helper_Interface
 {
 
   /**
-   * @var JooS_Helper_Subject
+   * @var Subject
    */
   private $_subject = null;
 
@@ -30,9 +32,9 @@ abstract class JooS_Helper_Abstract implements JooS_Helper_Interface
   /**
    * Set helper's subject
    * 
-   * @param JooS_Helper_Subject $subject Subject
+   * @param Subject $subject Subject
    * 
-   * @return JooS_Helper_Abstract
+   * @return Helper_Abstract
    */
   final public function setSubject($subject)
   {
@@ -43,7 +45,7 @@ abstract class JooS_Helper_Abstract implements JooS_Helper_Interface
   /**
    * Returns helper's subject
    * 
-   * @return JooS_Helper_Subject
+   * @return Subject
    */
   final protected function getSubject()
   {

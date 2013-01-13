@@ -4,12 +4,16 @@
  * @package JooS
  * @subpackage Helper
  */
-require_once "JooS/Helper/Abstract.php";
+namespace JooS;
+
+use JooS\Helper\Helper_Abstract;
+
+require_once "JooS/Helper/Helper/Abstract.php";
 
 /**
  * Options helper
  */
-class JooS_Options extends JooS_Helper_Abstract
+class Options extends Helper_Abstract
 {
   /**
    * @var array
@@ -147,7 +151,7 @@ class JooS_Options extends JooS_Helper_Abstract
   {
     if (is_null($this->_defaultData)) {
       $subject = $this->getSubject();
-      if (!is_null($subject) && $subject instanceof JooS_Options_Subject) {
+      if (!is_null($subject) && $subject instanceof Options_Subject) {
         $this->_defaultData = $subject->getDefaultOptions();
       } else {
         $this->_defaultData = array();

@@ -4,12 +4,19 @@
  * @package JooS
  * @subpackage Helper
  */
-require_once "JooS/Helper/Abstract.php";
+namespace JooS;
+
+use JooS\Helper\Helper_Abstract;
+
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+
+require_once "JooS/Helper/Helper/Abstract.php";
 
 /**
  * File/directory operations helper.
  */
-class JooS_Files extends JooS_Helper_Abstract
+class Files extends Helper_Abstract
 {
 
   /**

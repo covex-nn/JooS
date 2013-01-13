@@ -4,11 +4,12 @@
  * @package JooS
  * @subpackage Helper
  */
+namespace JooS\Helper;
 
 /**
  * Interface for Helpers
  */
-interface JooS_Helper_Interface
+interface Helper_Interface
 {
 
   /**
@@ -23,7 +24,7 @@ interface JooS_Helper_Interface
    * 
    * @param type $subject Subject
    * 
-   * @return JooS_Helper_Interface
+   * @return Helper_Interface
    */
   public function setSubject($subject);
 

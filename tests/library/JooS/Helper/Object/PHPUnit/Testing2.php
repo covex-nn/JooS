@@ -1,8 +1,12 @@
 <?php
 
-require_once "JooS/Helper/Abstract.php";
+namespace JooS;
 
-class JooS_Helper_Object_PHPUnit_Testing2 extends JooS_Helper_Abstract
+use JooS\Helper\Helper_Abstract;
+
+require_once "JooS/Helper/Helper/Abstract.php";
+
+class Helper_Object_PHPUnit_Testing2 extends Helper_Abstract
 {
 
   public static function init()

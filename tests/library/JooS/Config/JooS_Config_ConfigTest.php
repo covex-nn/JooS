@@ -1,11 +1,10 @@
 <?php
 
-require_once "JooS/Config.php";
+namespace JooS\Config;
 
-/**
- * Test class for JooS_Config.
- */
-class JooS_ConfigTest extends PHPUnit_Framework_TestCase
+require_once "JooS/Config/Config.php";
+
+class ConfigTest extends \PHPUnit_Framework_TestCase
 {
 
   public function testCreateSetUnset()
@@ -15,14 +14,14 @@ class JooS_ConfigTest extends PHPUnit_Framework_TestCase
       "f" => 2
     );
 
-    $c = JooS_Config::getInstance("Qqq_Sss");
+    $c = Config::getInstance("Qqq_Sss");
     $c->d = $dataArray;
 
     $this->assertEquals(1, $c->d->e());
     $this->assertEquals(2, $c->d->f());
     $this->assertEquals($dataArray, $c->d->valueOf());
 
-    $g = JooS_Config::qqq_Sss();
+    $g = Config::qqq_Sss();
     $g["d"]->e = 3;
     unset($g->d->f);
 
@@ -34,15 +33,15 @@ class JooS_ConfigTest extends PHPUnit_Framework_TestCase
 
     $this->assertTrue($c === $g);
 
-    JooS_Config::clearInstance("Qqq_Sss");
+    Config::clearInstance("Qqq_Sss");
   }
 
   public function testExistsClass()
   {
-    $c1 = JooS_Config::Qwerty1();
+    $c1 = Config::Qwerty1();
     $c1->c = 1;
 
-    $c2 = JooS_Config::newInstance("Qwerty2", array(
+    $c2 = Config::newInstance("Qwerty2", array(
         "a" => array()
       ));
 
@@ -50,8 +49,8 @@ class JooS_ConfigTest extends PHPUnit_Framework_TestCase
 
     $this->assertEquals(1, $c2->a->b->c());
 
-    JooS_Config::clearInstance("Qwerty1");
-    JooS_Config::clearInstance("Qwerty2");
+    Config::clearInstance("Qwerty1");
+    Config::clearInstance("Qwerty2");
   }
 
   public function testNewInstance()
@@ -60,7 +59,7 @@ class JooS_ConfigTest extends PHPUnit_Framework_TestCase
       "a" => 1,
       "b" => 2,
     );
-    $c = JooS_Config::newInstance("Qwerty1", $data);
+    $c = Config::newInstance("Qwerty1", $data);
 
     $this->assertEquals(1, $c->a());
 
@@ -77,7 +76,7 @@ class JooS_ConfigTest extends PHPUnit_Framework_TestCase
     unset($c["a"]);
     $this->assertTrue(!isset($c["a"]));
 
-    JooS_Config::clearInstance("Qwerty1");
+    Config::clearInstance("Qwerty1");
   }
 
   /**
@@ -85,7 +84,7 @@ class JooS_ConfigTest extends PHPUnit_Framework_TestCase
    */
   public function testError_TypeMissmatch()
   {
-    $c = JooS_Config::getInstance("Qwerty1");
+    $c = Config::getInstance("Qwerty1");
 
     $c->a = (object) array();
   }
@@ -95,7 +94,7 @@ class JooS_ConfigTest extends PHPUnit_Framework_TestCase
    */
   public function testError_UseScalarValueAsArray()
   {
-    $c = JooS_Config::getInstance("Qwerty1");
+    $c = Config::getInstance("Qwerty1");
     $c->a = 1;
 
     $c->a->b = 2;
@@ -103,60 +102,60 @@ class JooS_ConfigTest extends PHPUnit_Framework_TestCase
 
   public function testDataAdapter()
   {
-    $delete1 = JooS_Config::deleteInstance("Testing1");
+    $delete1 = Config::deleteInstance("Testing1");
     $this->assertFalse($delete1);
     
     require_once "JooS/Config/Adapter/PHPUnit/Testing.php";
 
-    $dataAdapter = new JooS_Config_Adapter_PHPUnit_Testing(
+    $dataAdapter = new Adapter_PHPUnit_Testing(
         array(
           "testing1" => array("qwerty" => "asdf"),
         )
     );
 
-    JooS_Config::setDataAdapter($dataAdapter);
-    $this->assertEquals($dataAdapter, JooS_Config::getDataAdapter());
+    Config::setDataAdapter($dataAdapter);
+    $this->assertEquals($dataAdapter, Config::getDataAdapter());
 
-    $config1 = JooS_Config::Testing1();
+    $config1 = Config::Testing1();
     $this->assertEquals("asdf", $config1->qwerty->valueOf());
 
     $config1->qwerty = "zxcv";
-    JooS_Config::saveInstance("Testing1");
-    JooS_Config::clearInstance("Testing1");
+    Config::saveInstance("Testing1");
+    Config::clearInstance("Testing1");
 
-    $config2 = JooS_Config::Testing1();
+    $config2 = Config::Testing1();
     $this->assertEquals(array("qwerty" => "zxcv"), $config2->valueOf());
     
     $config2->qwerty = "qqq";
     $config2->save();
-    JooS_Config::clearInstance("Testing1");
+    Config::clearInstance("Testing1");
 
-    $config3 = JooS_Config::Testing1();
+    $config3 = Config::Testing1();
     $this->assertEquals(array("qwerty" => "qqq"), $config3->valueOf());
     
-    JooS_Config::deleteInstance("Testing1");
+    Config::deleteInstance("Testing1");
 
-    $config4 = JooS_Config::Testing1();
+    $config4 = Config::Testing1();
     $this->assertEquals(array(), $config4->valueOf());
     
-    JooS_Config::clearInstance("Testing1");
-    JooS_Config::clearDataAdapter();
-    $this->assertEquals(null, JooS_Config::getDataAdapter());
+    Config::clearInstance("Testing1");
+    Config::clearDataAdapter();
+    $this->assertEquals(null, Config::getDataAdapter());
   }
 
   public function testClearAll()
   {
-    $c1 = JooS_Config::getInstance("test");
+    $c1 = Config::getInstance("test");
     $c1->value = 1;
 
-    JooS_Config::clearAll();
+    Config::clearAll();
 
-    $c2 = JooS_Config::getInstance("test");
+    $c2 = Config::getInstance("test");
     $this->assertFalse(isset($c2->value));
 
-    JooS_Config::clearDataAdapter();
+    Config::clearDataAdapter();
 
-    $save1 = JooS_Config::saveInstance("test");
+    $save1 = Config::saveInstance("test");
     $this->assertFalse($save1);
   }
 

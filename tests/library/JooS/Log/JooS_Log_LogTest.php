@@ -1,33 +1,37 @@
 <?php
 
-require_once "JooS/Log.php";
+namespace JooS\Log;
 
-require_once "JooS/Config.php";
+use JooS\Config\Config;
 
-class JooS_LogTest extends PHPUnit_Framework_TestCase
+require_once "JooS/Log/Log.php";
+
+require_once "JooS/Config/Config.php";
+
+class LogTest extends \PHPUnit_Framework_TestCase
 {
 
   public function testWriters()
   {
-    JooS_Config::newInstance("JooS_Log", array(
+    Config::newInstance("JooS_Log", array(
       "writers" => array(
       )
     ));
     
-    $writers1 = JooS_Log::getWriters();
+    $writers1 = Log::getWriters();
     $this->assertEquals(0, sizeof($writers1));
     
-    require_once "JooS/Log/Null.php";
+    require_once "JooS/Log/None.php";
     
-    $writerNull = new JooS_Log_Null();
+    $writerNull = new None();
     
-    $add1 = JooS_Log::addWriter($writerNull);
+    $add1 = Log::addWriter($writerNull);
     $this->assertTrue($add1);
     
-    $add2 = JooS_Log::addWriter($writerNull);
+    $add2 = Log::addWriter($writerNull);
     $this->assertFalse($add2);
     
-    $writers2 = JooS_Log::getWriters();
+    $writers2 = Log::getWriters();
     $this->assertEquals(1, sizeof($writers2));
     
     $writer = array_shift($writers2);
@@ -36,20 +40,20 @@ class JooS_LogTest extends PHPUnit_Framework_TestCase
 
   public function testObserver()
   {
-    JooS_Config::newInstance("JooS_Log", array(
+    Config::newInstance("JooS_Log", array(
       "writers" => array(
         "output", "null"
       )
     ));
     
-    require_once "JooS/Event/Log.php";
+    require_once "JooS/Log/Log/Event.php";
     
-    $event = JooS_Event_Log::getInstance();
+    $event = Log_Event::getInstance();
     $event->message = "qwerty";
     
     ob_start();
     
-    JooS_Log::observer($event);
+    Log::observer($event);
     
     $text = ob_get_contents();
     ob_clean();
@@ -59,14 +63,14 @@ class JooS_LogTest extends PHPUnit_Framework_TestCase
   
   protected function setUp()
   {
-    JooS_Log::clearWriters();
+    Log::clearWriters();
   }
   
   protected function tearDown()
   {
-    JooS_Config::clearInstance("JooS_Log");
+    Config::clearInstance("JooS_Log");
     
-    JooS_Log::clearWriters();
+    Log::clearWriters();
   }
   
 }

@@ -1,12 +1,18 @@
 <?php
 
+namespace JooS;
+
+use JooS\Helper\Subject as Helper_Subject;
+use JooS\Helper\Broker as Helper_Broker;
+
 require_once "JooS/Options.php";
 
 require_once "JooS/Helper/Subject.php";
 
 require_once "JooS/Options/Subject.php";
 
-class JooS_OptionsTest extends PHPUnit_Framework_TestCase implements JooS_Helper_Subject, JooS_Options_Subject
+class OptionsTest extends \PHPUnit_Framework_TestCase
+  implements Helper_Subject, Options_Subject
 {
 
   public function testInstance()
@@ -32,14 +38,14 @@ class JooS_OptionsTest extends PHPUnit_Framework_TestCase implements JooS_Helper
 
   public function testNoSubject()
   {
-    $options = new JooS_Options();
+    $options = new Options();
 
     $this->assertFalse(isset($options->qwerty));
   }
 
   public function testLoadJson()
   {
-    $options = new JooS_Options();
+    $options = new Options();
 
     $load1 = $options->loadJson(__DIR__ . "/JooS_OptionsTest.json");
 
@@ -54,7 +60,7 @@ class JooS_OptionsTest extends PHPUnit_Framework_TestCase implements JooS_Helper
   
   public function testLoadCommandLine()
   {
-    $options = new JooS_Options();
+    $options = new Options();
     
     $options->loadCommandLine(array(
       "--value1=2", 
@@ -72,7 +78,7 @@ class JooS_OptionsTest extends PHPUnit_Framework_TestCase implements JooS_Helper
     if ($this->_helperBroker === null) {
       require_once "JooS/Helper/Broker.php";
 
-      $this->_helperBroker = JooS_Helper_Broker::newInstance($this);
+      $this->_helperBroker = Helper_Broker::newInstance($this);
     }
     return $this->_helperBroker;
   }
@@ -85,7 +91,7 @@ class JooS_OptionsTest extends PHPUnit_Framework_TestCase implements JooS_Helper
   }
 
   /**
-   * @return JooS_Options
+   * @return Options
    */
   public function getOptions()
   {

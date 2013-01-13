@@ -1,14 +1,16 @@
 <?php
 
+namespace JooS;
+
 require_once "JooS/Files.php";
 
-class JooS_FilesTest extends PHPUnit_Framework_TestCase
+class FilesTest extends \PHPUnit_Framework_TestCase
 {
 
   public function testInstance()
   {
-    $files = new JooS_Files();
-    $this->assertTrue($files instanceof JooS_Files);
+    $files = new Files();
+    $this->assertTrue($files instanceof Files);
     
     $dir1 = $files->mkdir();
     $this->assertTrue(file_exists($dir1));

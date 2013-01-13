@@ -2,16 +2,17 @@
 
 /**
  * @package JooS
- * @subpackage Deploy
  */
-require_once "JooS/Event.php";
+namespace JooS\Event;
+
+require_once "JooS/Event/Event.php";
 
 /**
  * Event 'Initialize application'
  * 
- * @method JooS_Event_Bootstrap getInstance() Create event instance
+ * @method Bootstrap getInstance() Create event instance
  */
-class JooS_Event_Bootstrap extends JooS_Event
+class Bootstrap extends Event
 {
   
 }

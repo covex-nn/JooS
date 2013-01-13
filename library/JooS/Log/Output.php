@@ -4,12 +4,14 @@
  * @package JooS
  * @subpackage Log
  */
-require_once "JooS/Log/Interface.php";
+namespace JooS\Log;
+
+require_once "JooS/Log/Log/Interface.php";
 
 /**
  * Echo log data.
  */
-class JooS_Log_Output implements JooS_Log_Interface
+class Output implements Log_Interface
 {
   
   /**

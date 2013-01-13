@@ -1,8 +1,10 @@
 <?php
 
+namespace JooS\Helper;
+
 require_once "JooS\Helper\Subject.php";
 
-class JooS_Helper_Subject_PHPUnit_Testing implements JooS_Helper_Subject
+class Subject_PHPUnit_Testing implements Subject
 {
 
   private $_helperBroker = null;
@@ -12,7 +14,7 @@ class JooS_Helper_Subject_PHPUnit_Testing implements JooS_Helper_Subject
     if ($this->_helperBroker === null) {
       require_once "JooS/Helper/Broker.php";
 
-      $this->_helperBroker = JooS_Helper_Broker::newInstance($this);
+      $this->_helperBroker = Broker::newInstance($this);
     }
     return $this->_helperBroker;
   }
