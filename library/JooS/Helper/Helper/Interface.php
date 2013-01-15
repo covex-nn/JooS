@@ -13,13 +13,6 @@ interface Helper_Interface
 {
 
   /**
-   * Initialization
-   * 
-   * @return null
-   */
-  public static function init();
-
-  /**
    * Set subject.
    * 
    * @param type $subject Subject

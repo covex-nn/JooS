@@ -20,16 +20,6 @@ abstract class Helper_Abstract implements Helper_Interface
   private $_subject = null;
 
   /**
-   * No initialization code yet. Can be overwrited.
-   * 
-   * @return null
-   */
-  public static function init()
-  {
-    
-  }
-
-  /**
    * Set helper's subject
    * 
    * @param Subject $subject Subject

@@ -6,66 +6,14 @@
  */
 namespace JooS\Helper;
 
-use ReflectionClass;
 use JooS\Config\Config;
 use JooS\Loader;
 
 /**
  * Helper broker.
  */
-final class Broker implements \ArrayAccess
+final class Broker
 {
-
-  private $_helpers = array();
-
-  private $_subject = null;
-
-  private static $_loadedHelpers = array();
-
-  private static $_paths = null;
-
-  /**
-   * Adds namespace-prefix to existing helpers className
-   * 
-   * @param string $prefix Prefix
-   * 
-   * @return null
-   */
-  public static function addPrefix($prefix)
-  {
-    $prefix = rtrim($prefix, "\\") . "\\";
-    $path = str_replace("\\", "/", $prefix);
-
-    $newPrefix = array(
-      "dir" => $path,
-      "prefix" => $prefix
-    );
-
-    if (!in_array($newPrefix, self::$_paths)) {
-      self::$_paths[] = $newPrefix;
-    }
-  }
-
-  /**
-   * Returns all available helper classNames prefixes
-   * 
-   * @return array
-   */
-  public static function getPrefixes()
-  {
-    return self::$_paths;
-  }
-
-  /**
-   * Clears all helpers classNames prefixes
-   * 
-   * @return null
-   */
-  public static function clearPrefixes()
-  {
-    self::$_paths = array();
-    self::addPrefix("JooS");
-  }
 
   /**
    * Create new helper instance for subject
@@ -76,26 +24,41 @@ final class Broker implements \ArrayAccess
    */
   public static function newInstance(Subject $subject)
   {
-    $newInstance = new self();
-    $newInstance->_subject = $subject;
+    $instance = new self();
+    /* @var $instance Broker */
+    $instance->_subject = $subject;
 
-    return $newInstance;
+    return $instance;
   }
 
   /**
-   * Returns ReflectionClass for helper's class (???)
-   * 
-   * @param string $helper    Name
-   * @param array  $arguments Not used
-   * 
-   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-   * @return ReflectionClass
+   * @var Subject
    */
-  public function __call($helper, $arguments)
+  private $_subject = null;
+
+  /**
+   * Private contructor
+   */
+  private function __construct()
   {
-    return self::_getHelperReflection($helper);
+    require_once "JooS/Config/Config.php";
+
+    $this->clearPrefixes();
+    $this->appendPrefix("JooS");
+    
+    $prefixes = Config::Helper_Broker()->prefixes();
+    if (is_array($prefixes)) {
+      foreach ($prefixes as $prefix) {
+        $this->appendPrefix($prefix);
+      }
+    }
   }
 
+  /**
+   * @var array
+   */
+  private $_helpers = array();
+  
   /**
    * Returns helper
    * 
@@ -105,13 +68,15 @@ final class Broker implements \ArrayAccess
    */
   public function __get($helper)
   {
-    if (!$this->__isset($helper)) {
-      require_once "JooS/Helper/Exception.php";
-
-      throw new Exception("Helper '$helper' was not found");
+    if (isset($this->_helpers[$helper])) {
+      $instance = $this->_helpers[$helper];
+    } else {
+      $instance = $this->_getHelper($helper);
+      if (!is_null($instance)) {
+        $this->_helpers[$helper] = $instance;
+      }
     }
-
-    return $this->_helpers[$helper];
+    return $instance;
   }
 
   /**
@@ -123,13 +88,103 @@ final class Broker implements \ArrayAccess
    */
   public function __isset($helper)
   {
-    $has = true;
-    try {
-      $this->_getHelper($helper);
-    } catch (Exception $e) {
-      $has = false;
+    if (isset($this->_helpers[$helper])) {
+      $isset = true;
+    } else {
+      $isset = !is_null($this->_getHelper($helper));
     }
-    return $has;
+    return $isset;
+  }
+
+  /**
+   * Creates a new helper's instance
+   * 
+   * @param string $helper Name
+   * 
+   * @return Helper_Interface
+   */
+  private function _getHelper($helper)
+  {
+    require_once "JooS/Loader.php";
+
+    $instance = null;
+    foreach ($this->_prefixes as $prefix) {
+      $className = $prefix . "\\" . $helper;
+      if (Loader::loadClass($className)) {
+        if (is_subclass_of($className, __NAMESPACE__ . "\\Helper_Interface")) {
+          $instance = new $className();
+          /* @var $instance Helper_Interface */
+          $instance->setSubject($this->_subject);
+        }
+        break;
+      }
+    }
+    return $instance;
+  }
+  
+  /**
+   * @var array
+   */
+  private $_prefixes = array();
+  
+  /**
+   * Returns all available helper classNames prefixes
+   * 
+   * @return array
+   */
+  public function getPrefixes()
+  {
+    return array_values($this->_prefixes);
+  }
+  
+  /**
+   * Append namespace-prefix
+   * 
+   * @param string $prefix Prefix
+   * 
+   * @return null
+   */
+  public function appendPrefix($prefix)
+  {
+    $this->deletePrefix($prefix);
+    $this->_prefixes[$prefix] = $prefix;
+  }
+  
+  /**
+   * Prepend namespace-prefix
+   * 
+   * @param string $prefix Prefix
+   * 
+   * @return null
+   */
+  public function prependPrefix($prefix)
+  {
+    $this->deletePrefix($prefix);
+    
+    $prepend = array($prefix => $prefix);
+    $this->_prefixes = array_merge($prepend, $this->_prefixes);
+  }
+  
+  /**
+   * Delete namespace-prefix
+   * 
+   * @param string $prefix Prefix
+   * 
+   * @return null
+   */
+  public function deletePrefix($prefix)
+  {
+    unset($this->_prefixes[$prefix]);
+  }
+
+  /**
+   * Clears all helpers classNames prefixes
+   * 
+   * @return null
+   */
+  public function clearPrefixes()
+  {
+    $this->_prefixes = array();
   }
 
   /**
@@ -138,9 +193,9 @@ final class Broker implements \ArrayAccess
    * @param string $name  Name
    * @param mixed  $value Value
    * 
-   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-   * @throws Exception
    * @return null
+   * @throws Exception
+   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    */
   public function __set($name, $value)
   {
@@ -154,144 +209,15 @@ final class Broker implements \ArrayAccess
    * 
    * @param string $name Name
    * 
-   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-   * @throws Exception
    * @return null
+   * @throws Exception
+   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    */
   public function __unset($name)
   {
     require_once "JooS/Helper/Exception.php";
 
     throw new Exception("Forbidden");
-  }
-
-  /**
-   * Is helper presents ?
-   * 
-   * @param string $helper Name
-   * 
-   * @return boolean
-   */
-  public function offsetExists($helper)
-  {
-    return $this->__isset($helper);
-  }
-
-  /**
-   * Returns helper.
-   * 
-   * @param string $helper Name
-   * 
-   * @return JooS_Helper_Abstract
-   */
-  public function offsetGet($helper)
-  {
-    return $this->__get($helper);
-  }
-
-  /**
-   * Forbidden.
-   * 
-   * @param string $offset Name
-   * @param mixed  $value  Value
-   * 
-   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-   * @return null
-   */
-  public function offsetSet($offset, $value)
-  {
-    $this->__set($offset, $value);
-  }
-
-  /**
-   * Forbidden.
-   * 
-   * @param type $offset Name
-   * 
-   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-   * @return null
-   */
-  public function offsetUnset($offset)
-  {
-    $this->__unset($offset);
-  }
-
-  /**
-   * Private contructor.
-   */
-  private function __construct()
-  {
-    if (is_null(self::$_paths)) {
-      require_once "JooS/Config/Config.php";
-
-      self::clearPrefixes();
-      $prefixes = Config::Helper_Broker()->prefixes();
-
-      if (is_array($prefixes)) {
-        foreach ($prefixes as $prefix) {
-          self::addPrefix($prefix);
-        }
-      }
-    }
-  }
-
-  /**
-   * Creates a new helper's instance
-   * 
-   * @param string $helper Name
-   * 
-   * @return Helper_Abstract
-   */
-  private function _getHelper($helper)
-  {
-    if (!isset($this->_helpers[$helper])) {
-      $reflection = self::_getHelperReflection($helper);
-      $this->_helpers[$helper] = $reflection->newInstance();
-      $this->_helpers[$helper]->setSubject($this->_subject);
-    }
-    return $this->_helpers[$helper];
-  }
-
-  /**
-   * Returns ReflectionClass.
-   * 
-   * @param string $helper Name
-   * 
-   * @return ReflectionClass
-   */
-  private static function _getHelperReflection($helper)
-  {
-    if (!isset(self::$_loadedHelpers[$helper])) {
-      require_once "JooS/Loader.php";
-
-      $className = null;
-      for ($i = sizeof(self::$_paths) - 1; $i >= 0; $i--) {
-        $className = self::$_paths[$i]["prefix"] . $helper;
-        if (Loader::loadClass($className)) {
-          break;
-        } else {
-          $className = null;
-        }
-      }
-      if (is_null($className)) {
-        require_once "JooS/Helper/Exception.php";
-
-        throw new Exception("Helper '$helper' was not found");
-      }
-
-      $rHelper = new ReflectionClass($className);
-      if ($rHelper->implementsInterface("JooS\\Helper\\Helper_Interface")) {
-        self::$_loadedHelpers[$helper] = $rHelper;
-        $rHelper->getMethod("init")->invoke(null);
-      } else {
-        require_once "JooS/Helper/Exception.php";
-
-        throw new Exception(
-          "Helper '$helper' must implement JooS\\Helper\\Helper_Interface"
-        );
-      }
-    }
-    return self::$_loadedHelpers[$helper];
   }
 
 }
