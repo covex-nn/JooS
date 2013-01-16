@@ -1,0 +1,19 @@
+{
+  "name" : "covex-nn/joos", 
+  "type" : "library", 
+  "version" : "3.0.2", 
+  "homepage" : "http://github.com/covex-nn/PHPackager", 
+  "license" : "MIT", 
+  "authors": [
+    {
+      "name" : "Andrey F. Mindubaev", 
+      "email" : "covex.mobile@gmail.com", 
+      "role" : "Developer"
+    }
+  ], 
+  "autoload" : {
+    "psr-0" : {
+      "JooS\\" : "library/"
+    }
+  }
+}

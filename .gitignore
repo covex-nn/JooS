@@ -4,3 +4,4 @@
 /build/build.required.properties
 /external
 /target
+/composer.lock
