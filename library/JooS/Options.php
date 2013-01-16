@@ -6,14 +6,12 @@
  */
 namespace JooS;
 
-use JooS\Helper\Helper_Abstract;
-
 require_once "JooS/Helper/Helper/Abstract.php";
 
 /**
  * Options helper
  */
-class Options extends Helper_Abstract
+class Options extends Helper\Helper_Abstract
 {
   /**
    * @var array

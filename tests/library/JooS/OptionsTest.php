@@ -11,8 +11,7 @@ require_once "JooS/Helper/Subject.php";
 
 require_once "JooS/Options/Subject.php";
 
-class OptionsTest extends \PHPUnit_Framework_TestCase
-  implements Helper_Subject, Options_Subject
+class OptionsTest extends \PHPUnit_Framework_TestCase implements Helper_Subject, Options_Subject
 {
 
   public function testInstance()
@@ -47,7 +46,7 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
   {
     $options = new Options();
 
-    $load1 = $options->loadJson(__DIR__ . "/JooS_OptionsTest.json");
+    $load1 = $options->loadJson(__DIR__ . "/OptionsTest.json");
 
     $this->assertTrue($load1);
     $this->assertEquals(1, $options->param1);
@@ -57,17 +56,17 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
     $load2 = $options->loadJson(__FILE__);
     $this->assertFalse($load2);
   }
-  
+
   public function testLoadCommandLine()
   {
     $options = new Options();
-    
+
     $options->loadCommandLine(array(
-      "--value1=2", 
-      "", 
-      "sdsdsd", 
+      "--value1=2",
+      "",
+      "sdsdsd",
     ));
-    
+
     $this->assertEquals(2, $options->value1);
   }
 

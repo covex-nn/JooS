@@ -6,8 +6,6 @@
  */
 namespace JooS;
 
-use JooS\Helper\Helper_Abstract;
-
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -16,7 +14,7 @@ require_once "JooS/Helper/Helper/Abstract.php";
 /**
  * File/directory operations helper.
  */
-class Files extends Helper_Abstract
+class Files extends Helper\Helper_Abstract
 {
 
   /**
