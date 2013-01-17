@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <control>
-<package name="JooS" version="3.0.2">
+<package name="JooS" version="3.0.3">
   <source><![CDATA[
     "library", "bootstrap.php"
   ]]></source>
