@@ -23,15 +23,12 @@ class Loader
     if (!class_exists($className)) {
       $path = self::getPath($className);
 
-      $includePaths = explode(PATH_SEPARATOR, get_include_path());
-      for ($i = 0; $i < sizeof($includePaths); $i++) {
-        $realPath = $includePaths[$i] . DIRECTORY_SEPARATOR . $path;
+      $realPath = stream_resolve_include_path($path);
 
-        if (file_exists($realPath)) {
-          require_once($realPath);
+      if (file_exists($realPath)) {
+        require_once($realPath);
 
-          return class_exists($className);
-        }
+        return class_exists($className);
       }
       return false;
     } else {
@@ -106,6 +103,6 @@ class Loader
 
     return $result;
   }
-
+  
 }
 
