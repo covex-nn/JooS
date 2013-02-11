@@ -86,11 +86,14 @@ class Files extends Helper\Helper_Abstract
         $iteratorRd, RecursiveIteratorIterator::CHILD_FIRST
       );
       foreach ($iteratorRi as $file) {
-        /* @var $file SplFileInfo */
+        /* @var $file \SplFileInfo */
+        $filename = $file->getPathname();
         if ($file->isDir()) {
-          rmdir($file->getPathname());
+          if (substr($filename, -1, 1) != ".") {
+            rmdir($filename);
+          }
         } else {
-          unlink($file->getPathname());
+          unlink($filename);
         }
       }
       rmdir($path);
