@@ -114,16 +114,20 @@ class Files extends Helper\Helper_Abstract
   private function _deleteSymlink($link)
   {
     clearstatcache();
-    $target = readlink($link);
-    do {
-      $newTarget = dirname($target) . "/" . uniqid(basename($target));
-    } while (file_exists($newTarget));
+    $target = @readlink($link);
+    if ($target !== false) {
+      do {
+        $newTarget = dirname($target) . "/" . uniqid(basename($target));
+      } while (file_exists($newTarget));
 
-    rename($target, $newTarget);
+      rename($target, $newTarget);
+    }
     if (!@rmdir($link)) {
       unlink($link);
     }
-    rename($newTarget, $target);
+    if ($target !== false) {
+      rename($newTarget, $target);
+    }
   }
   
   /**

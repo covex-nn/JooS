@@ -35,7 +35,7 @@ class FilesTest extends \PHPUnit_Framework_TestCase
     $this->assertFalse(file_exists($file1));
   }
   
-  public function testDeleteSymlinkFile()
+  public function testDeleteSymlink()
   {
     $files = new Files();
     
@@ -61,4 +61,29 @@ class FilesTest extends \PHPUnit_Framework_TestCase
     $this->assertFileExists($targetFile);
   }
 
+  public function testDeleteBadSymlink()
+  {
+    $files = new Files();
+    
+    $dirStorage = $files->mkdir();
+    
+    $targetDir = $files->mkdir();
+    $targetFile = $targetDir . "/qwerty";
+    file_put_contents($targetFile, "asdf");
+    
+    $symlinkDir = $dirStorage . "/linkDir";
+    $symlinkFile = $dirStorage . "/linkFile";
+    
+    symlink($targetDir, $symlinkDir);
+    symlink($targetFile, $symlinkFile);
+    
+    $files->delete($targetDir);
+
+    $files->delete($symlinkDir);
+    $files->delete($symlinkFile);
+    
+    $this->assertFileNotExists($symlinkDir);
+    $this->assertFileNotExists($symlinkFile);
+  }
+  
 }
