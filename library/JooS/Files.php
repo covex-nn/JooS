@@ -78,7 +78,9 @@ class Files extends Helper\Helper_Abstract
    */
   public function delete($path)
   {
-    if (is_file($path)) {
+    if (is_link($path)) {
+      $this->_deleteSymlink($path);
+    } elseif (is_file($path)) {
       unlink($path);
     } else {
       $iteratorRd = new RecursiveDirectoryIterator($path);
@@ -88,7 +90,9 @@ class Files extends Helper\Helper_Abstract
       foreach ($iteratorRi as $file) {
         /* @var $file \SplFileInfo */
         $filename = $file->getPathname();
-        if ($file->isDir()) {
+        if ($file->isLink()) {
+          $this->_deleteSymlink($filename);
+        } elseif ($file->isDir()) {
           if (substr($filename, -1, 1) != ".") {
             rmdir($filename);
           }
@@ -98,6 +102,28 @@ class Files extends Helper\Helper_Abstract
       }
       rmdir($path);
     }
+  }
+  
+  /**
+   * Delete symlink
+   * 
+   * @param string $link Path to link
+   * 
+   * @return null
+   */
+  private function _deleteSymlink($link)
+  {
+    clearstatcache();
+    $target = readlink($link);
+    do {
+      $newTarget = dirname($target) . "/" . uniqid(basename($target));
+    } while (file_exists($newTarget));
+
+    rename($target, $newTarget);
+    if (!@rmdir($link)) {
+      unlink($link);
+    }
+    rename($newTarget, $target);
   }
   
   /**

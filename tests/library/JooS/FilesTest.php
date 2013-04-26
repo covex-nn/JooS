@@ -34,5 +34,31 @@ class FilesTest extends \PHPUnit_Framework_TestCase
     $this->assertFalse(file_exists($dir1));
     $this->assertFalse(file_exists($file1));
   }
+  
+  public function testDeleteSymlinkFile()
+  {
+    $files = new Files();
+    
+    $dirStorage = $files->mkdir();
+    
+    $targetDir = $files->mkdir();
+    file_put_contents($targetDir . "/just_a_file", "asdf");
+    $targetFile = $files->tempnam();
+    file_put_contents($targetFile, "qwerty");
+    
+    $symlinkDir = $dirStorage . "/linkDir";
+    $symlinkFile = $dirStorage . "/linkFile";
+    
+    symlink($targetDir, $symlinkDir);
+    symlink($targetFile, $symlinkFile);
+    
+    $files->delete($dirStorage);
+    
+    $this->assertFileNotExists($symlinkDir);
+    $this->assertFileExists($targetDir);
+    
+    $this->assertFileNotExists($symlinkFile);
+    $this->assertFileExists($targetFile);
+  }
 
 }
