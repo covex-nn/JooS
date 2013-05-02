@@ -1,10 +1,6 @@
 {
   "name" : "covex-nn/joos", 
   "type" : "library", 
-  "require": {
-    "php" : ">=5.3.3"
-  },
-  "homepage" : "http://github.com/covex-nn/JooS", 
   "license" : "MIT", 
   "authors": [
     {
@@ -13,12 +9,28 @@
       "role" : "Developer"
     }
   ], 
+  "require": {
+    "php" : ">=5.3.3"
+  },
+  "require-dev" : {
+    "covex-nn/phpqatools" : ">=1.0.0"
+  }, 
+  "repositories" : [
+    { "type" : "composer", "url" : "https://raw.github.com/covex-nn/phpqatools/master" }
+  ], 
   "autoload" : {
     "psr-0" : {
-      "JooS\\" : "library/"
+      "JooS\\" : "src/"
     }
   }, 
-  "include-path" : [
-    "library/"
-  ]
+  "extra" : {
+    "branch-alias": {
+      "dev-master": "4.0.x-dev"
+    }
+  }, 
+  "config" : {
+    "bin-dir" : "bin"
+  }, 
+  "minimum-stability" : "dev", 
+  "prefer-stable" : true
 }

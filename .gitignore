@@ -1,7 +1,6 @@
-/nbproject
-/build/ci
-/build/build.local.properties
-/build/build.required.properties
-/external
-/target
-/composer.lock
+composer.lock
+bin
+build
+build.local.properties
+nbproject
+vendor
