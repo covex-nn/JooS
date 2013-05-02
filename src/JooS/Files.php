@@ -113,6 +113,10 @@ class Files extends Helper\Helper_Abstract
   {
     clearstatcache();
     $target = @readlink($link);
+    
+    if ($target !== false && !file_exists($target)) {
+      $target = false;
+    }
     if ($target !== false) {
       do {
         $newTarget = dirname($target) . "/" . uniqid(basename($target));
